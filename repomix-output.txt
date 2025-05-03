@@ -1,0 +1,685 @@
+This file is a merged representation of a subset of the codebase, containing specifically included files and files not matching ignore patterns, combined into a single document by Repomix.
+
+================================================================
+File Summary
+================================================================
+
+Purpose:
+--------
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+
+File Format:
+------------
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Multiple file entries, each consisting of:
+  a. A separator line (================)
+  b. The file path (File: path/to/file)
+  c. Another separator line
+  d. The full contents of the file
+  e. A blank line
+
+Usage Guidelines:
+-----------------
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+
+Notes:
+------
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Only files matching these patterns are included: Application/terraform/
+- Files matching these patterns are excluded: **/terraform, **/venv, **/__pycache__, **/layers
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+
+Additional Info:
+----------------
+
+================================================================
+Directory Structure
+================================================================
+Application/
+  terraform/
+    01_storage_stack/
+      main.tf
+      outputs.tf
+    02_bedrock_rag_stack/
+      main.tf
+      outputs.tf
+    modules/
+      bedrock_kb/
+        main.tf
+        outputs.tf
+        variables.tf
+      database/
+        main.tf
+        outputs.tf
+        variables.tf
+
+================================================================
+Files
+================================================================
+
+================
+File: Application/terraform/01_storage_stack/main.tf
+================
+provider "aws" {
+  region = "us-west-2"  # Change this to your desired region
+}
+
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "~> 5.0"
+
+  name = "bedrock-poc-vpc"
+  cidr = "10.0.0.0/16"
+
+  azs             = ["us-west-2a", "us-west-2b", "us-west-2c"]
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+
+  enable_nat_gateway = true
+  single_nat_gateway = true
+
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+
+  tags = {
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
+
+module "aurora_serverless" {
+  source = "../modules/database"
+
+  cluster_identifier = "my-aurora-serverless"
+  vpc_id             = module.vpc.vpc_id 
+  subnet_ids         = module.vpc.private_subnets
+
+  # Optionally override other defaults
+  database_name    = "myapp"
+  master_username  = "dbadmin"
+  max_capacity     = 1
+  min_capacity     = 0.5
+  allowed_cidr_blocks = ["10.0.0.0/16"]   
+}
+
+data "aws_caller_identity" "current" {}
+
+locals {
+  bucket_name = "bedrock-kb-${data.aws_caller_identity.current.account_id}"
+}
+
+module "s3_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.0"
+
+  bucket = local.bucket_name
+  acl    = "private"
+  force_destroy = true
+
+  control_object_ownership = true
+  object_ownership         = "BucketOwnerPreferred"
+
+  versioning = {
+    enabled = true
+  }
+
+  server_side_encryption_configuration = {
+    rule = {
+      apply_server_side_encryption_by_default = {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  tags = {
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
+
+================
+File: Application/terraform/01_storage_stack/outputs.tf
+================
+output "db_endpoint" {
+  value = module.aurora_serverless.cluster_endpoint
+}
+
+output "db_reader_endpoint" {
+  value = module.aurora_serverless.cluster_reader_endpoint
+}
+
+output "vpc_id" {
+  value = module.vpc.vpc_id
+}
+
+output "private_subnet_ids" {
+  value = module.vpc.private_subnets
+}
+
+output "public_subnet_ids" {
+  value = module.vpc.public_subnets
+}
+
+output "aurora_endpoint" {
+  value = module.aurora_serverless.cluster_endpoint
+}
+
+output "aurora_arn" {
+  value = module.aurora_serverless.database_arn
+}
+
+output "rds_secret_arn" {
+  value = module.aurora_serverless.database_secretsmanager_secret_arn
+}
+
+output "s3_bucket_name" {
+  value = module.s3_bucket.s3_bucket_arn
+}
+
+================
+File: Application/terraform/02_bedrock_rag_stack/main.tf
+================
+provider "aws" {
+  region = "us-west-2"  
+}
+
+module "bedrock_kb" {
+  source = "../modules/bedrock_kb" 
+
+  knowledge_base_name        = "my-bedrock-kb"
+  knowledge_base_description = "Knowledge base connected to Aurora Serverless database"
+
+  aurora_arn        = "" #TODO Update with output from stack1
+  aurora_db_name    = "myapp"
+  aurora_endpoint   = "" # TODO Update with output from stack1
+  aurora_table_name = "bedrock_integration.bedrock_kb"
+  aurora_primary_key_field = "id"
+  aurora_metadata_field = "metadata"
+  aurora_text_field = "chunks"
+  aurora_verctor_field = "embedding"
+  aurora_username   = "dbadmin"
+  aurora_secret_arn = "" #TODO Update with output from stack1
+  s3_bucket_arn = "" #TODO Update with output from stack1
+}
+
+================
+File: Application/terraform/02_bedrock_rag_stack/outputs.tf
+================
+output "bedrock_knowledge_base_id" {
+  value = module.bedrock_kb.id
+}
+
+output "bedrock_knowledge_base_arn" {
+  value = module.bedrock_kb.arn
+}
+
+================
+File: Application/terraform/modules/bedrock_kb/main.tf
+================
+resource "aws_iam_role" "bedrock_kb_role" {
+  name = "${var.knowledge_base_name}-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "bedrock.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "bedrock_kb_policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonBedrockFullAccess"
+  role       = aws_iam_role.bedrock_kb_role.name
+}
+
+# New IAM policy for RDS Data API access
+resource "aws_iam_policy" "rds_data_api_policy" {
+  name        = "${var.knowledge_base_name}-rds-data-api-policy"
+  path        = "/"
+  description = "IAM policy for RDS Data API access"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "rds-data:ExecuteStatement",
+          "rds-data:BatchExecuteStatement",
+          "rds-data:BeginTransaction",
+          "rds-data:CommitTransaction",
+          "rds-data:RollbackTransaction",
+        ]
+        Resource = var.aurora_arn
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:GetSecretValue"
+        ]
+        Resource = var.aurora_secret_arn
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "rds_data_api_policy_attachment" {
+  policy_arn = aws_iam_policy.rds_data_api_policy.arn
+  role       = aws_iam_role.bedrock_kb_role.name
+}
+
+resource "aws_iam_policy" "bedrock_kb_rds_access" {
+  name        = "bedrock_kb_rds_access"
+  path        = "/"
+  description = "IAM policy for Bedrock Knowledge Base to access RDS"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "rds:DescribeDBClusters",
+          "rds:DescribeDBInstances",
+          "rds:DescribeDBSubnetGroups",
+          "rds:ListTagsForResource",
+          "s3:ListBucket",
+          "s3:GetObject"
+        ]
+        Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
+        ]
+        Resource = var.aurora_secret_arn
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "rds_policy_attachment" {
+  policy_arn = aws_iam_policy.bedrock_kb_rds_access.arn
+  role       = aws_iam_role.bedrock_kb_role.name
+}
+
+resource "time_sleep" "wait_10_seconds" {
+  depends_on = [aws_iam_role_policy_attachment.bedrock_kb_policy]
+
+  create_duration = "10s"
+}
+
+resource "aws_bedrockagent_knowledge_base" "main" {
+  name = var.knowledge_base_name
+  role_arn = aws_iam_role.bedrock_kb_role.arn
+  knowledge_base_configuration {
+    vector_knowledge_base_configuration {
+      embedding_model_arn = "arn:aws:bedrock:us-west-2::foundation-model/amazon.titan-embed-text-v1"
+    }
+    type = "VECTOR"
+  }
+  storage_configuration {
+    type = "RDS"
+    rds_configuration {
+      credentials_secret_arn = var.aurora_secret_arn
+      database_name = var.aurora_db_name
+      resource_arn = var.aurora_arn
+      table_name = var.aurora_table_name
+      field_mapping {
+        primary_key_field = var.aurora_primary_key_field
+        vector_field   = var.aurora_verctor_field
+        text_field     = var.aurora_text_field
+        metadata_field = var.aurora_metadata_field
+      }
+
+    }
+  }
+  depends_on = [ time_sleep.wait_10_seconds ]
+}
+
+data "aws_caller_identity" "current" {}
+
+locals {
+  bucket_name = "bedrock-kb-${data.aws_caller_identity.current.account_id}"
+}
+
+resource "aws_bedrockagent_data_source" "s3_bedrock_bucket" {
+  knowledge_base_id = aws_bedrockagent_knowledge_base.main.id
+  name              = "s3_bedrock_bucket"
+  data_source_configuration {
+    type = "S3"
+    s3_configuration {
+      bucket_arn = var.s3_bucket_arn
+    }
+  }
+  depends_on = [ aws_bedrockagent_knowledge_base.main ]
+}
+
+================
+File: Application/terraform/modules/bedrock_kb/outputs.tf
+================
+output "arn" {
+    description = "Arn of the knowledgebase"
+    value = aws_bedrockagent_knowledge_base.main.arn
+}
+
+output "id" {
+    description = "ID of the knowledgebase"
+    value = aws_bedrockagent_knowledge_base.main.id
+}
+
+================
+File: Application/terraform/modules/bedrock_kb/variables.tf
+================
+variable "knowledge_base_name" {
+  description = "The name of the Bedrock knowledge base"
+  type        = string
+}
+
+variable "knowledge_base_description" {
+  description = "The description of the Bedrock knowledge base"
+  type        = string
+}
+
+variable "aurora_arn" {
+  description = "The ARN of the Aurora database"
+  type = string
+}
+
+variable "aurora_db_name" {
+  description = "The name of the Aurora database"
+  type        = string
+}
+
+variable "aurora_endpoint" {
+  description = "The endpoint of the Aurora database"
+  type        = string
+}
+
+variable "aurora_table_name" {
+  description = "The name of the table in the Aurora database"
+  type        = string
+}
+
+variable "aurora_username" {
+  description = "The username for the Aurora database"
+  type        = string
+}
+
+variable "aurora_secret_arn" {
+  description = "The ARN of the secret containing the Aurora database password"
+  type        = string
+}
+
+variable "aurora_verctor_field" {
+  description = "The column name for the vector values"
+  type = string  
+}
+
+variable "aurora_text_field" {
+  description = "The column name for the text values"
+  type = string
+}
+
+variable "aurora_metadata_field" {
+  description = "The column name for the metadata values"
+  type = string
+}
+
+variable "aurora_primary_key_field" {
+  description = "The column name for the primary key field"
+  type = string
+}
+
+variable "s3_bucket_arn" {
+  description = "The ARN for the S3 bucket where the data is"
+  type = string
+}
+
+================
+File: Application/terraform/modules/database/main.tf
+================
+resource "aws_rds_cluster" "aurora_serverless" {
+  cluster_identifier      = var.cluster_identifier
+  engine                  = "aurora-postgresql"
+  engine_mode             = "provisioned"
+  engine_version          = var.engine_version
+  database_name           = var.database_name
+  master_username         = var.master_username
+  master_password         = random_password.master_password.result
+  enable_http_endpoint    = true
+  skip_final_snapshot     = true
+  apply_immediately       = true
+
+  allow_major_version_upgrade = true
+
+  serverlessv2_scaling_configuration {
+    max_capacity             = var.max_capacity
+    min_capacity             = var.min_capacity
+  }
+
+  vpc_security_group_ids = [aws_security_group.aurora_sg.id]
+  db_subnet_group_name   = aws_db_subnet_group.aurora.name
+}
+
+resource "aws_rds_cluster_instance" "aurora_instance" {
+  cluster_identifier = aws_rds_cluster.aurora_serverless.id
+  instance_class     = "db.serverless"
+  engine             = aws_rds_cluster.aurora_serverless.engine
+  engine_version     = aws_rds_cluster.aurora_serverless.engine_version
+}
+
+resource "aws_db_subnet_group" "aurora" {
+  name       = "${var.cluster_identifier}-subnet-group"
+  subnet_ids = var.subnet_ids
+
+  tags = {
+    Name = "${var.cluster_identifier}-subnet-group"
+  }
+}
+
+resource "aws_security_group" "aurora_sg" {
+  name        = "${var.cluster_identifier}-sg"
+  description = "Security group for Aurora Serverless"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = var.allowed_cidr_blocks
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.cluster_identifier}-sg"
+  }
+}
+
+# New resources for secret management
+resource "random_password" "master_password" {
+  length  = 16
+  special = true
+}
+
+resource "aws_secretsmanager_secret" "aurora_secret" {
+  name = "${var.cluster_identifier}"
+  recovery_window_in_days = 0
+}
+
+resource "aws_secretsmanager_secret_version" "aurora_secret_version" {
+  secret_id = aws_secretsmanager_secret.aurora_secret.id
+  secret_string = jsonencode({
+    dbClusterIdentifier = aws_rds_cluster.aurora_serverless.cluster_identifier
+    password            = random_password.master_password.result
+    engine              = aws_rds_cluster.aurora_serverless.engine
+    port                = 5432
+    host                = aws_rds_cluster.aurora_serverless.endpoint
+    username            = aws_rds_cluster.aurora_serverless.master_username
+    db                  = aws_rds_cluster.aurora_serverless.database_name
+  })
+}
+
+================
+File: Application/terraform/modules/database/outputs.tf
+================
+output "cluster_endpoint" {
+  description = "The cluster endpoint"
+  value       = aws_rds_cluster.aurora_serverless.endpoint
+}
+
+output "cluster_reader_endpoint" {
+  description = "The cluster reader endpoint"
+  value       = aws_rds_cluster.aurora_serverless.reader_endpoint
+}
+
+output "cluster_id" {
+  description = "The cluster identifier"
+  value       = aws_rds_cluster.aurora_serverless.id
+}
+
+output "master_password" {
+  description = "Master password"
+  value = aws_rds_cluster.aurora_serverless.master_password
+}
+
+output "database_name" {
+  description = "Database name"
+  value = aws_rds_cluster.aurora_serverless.database_name
+}
+
+output "database_arn" {
+  description = "Database arn"
+  value = aws_rds_cluster.aurora_serverless.arn
+}
+
+output "database_master_username" {
+  description = "Database master username"
+  value = aws_rds_cluster.aurora_serverless.master_username
+}
+
+output "database_secretsmanager_secret_arn" {
+  description = "Secret with all the connection detaals"
+  value = aws_secretsmanager_secret_version.aurora_secret_version.arn
+}
+
+================
+File: Application/terraform/modules/database/variables.tf
+================
+variable "cluster_identifier" {
+  description = "The cluster identifier"
+  type        = string
+}
+
+variable "engine_version" {
+  description = "The engine version to use"
+  type        = string
+  default     = "15.4"
+}
+
+variable "database_name" {
+  description = "The name of the database to create when the cluster is created"
+  type        = string
+  default     = "mydb"
+}
+
+variable "master_username" {
+  description = "Username for the master DB user"
+  type        = string
+  default     = "admin"
+}
+
+variable "backup_retention_period" {
+  description = "The days to retain backups for"
+  type        = number
+  default     = 0
+}
+
+variable "preferred_backup_window" {
+  description = "The daily time range during which automated backups are created"
+  type        = string
+  default     = "02:00-03:00"
+}
+
+variable "auto_pause" {
+  description = "Whether to enable auto pause"
+  type        = bool
+  default     = true
+}
+
+variable "max_capacity" {
+  description = "The maximum capacity units for the cluster"
+  type        = number
+  default     = 4
+}
+
+variable "min_capacity" {
+  description = "The minimum capacity units for the cluster"
+  type        = number
+  default     = 2
+}
+
+variable "seconds_until_auto_pause" {
+  description = "The time in seconds before the cluster is paused"
+  type        = number
+  default     = 300
+}
+
+variable "timeout_action" {
+  description = "The action to take when the timeout is reached"
+  type        = string
+  default     = "ForceApplyCapacityChange"
+}
+
+variable "vpc_id" {
+  description = "The VPC ID where the cluster and security group will be created"
+  type        = string
+}
+
+variable "subnet_ids" {
+  description = "List of subnet IDs to use for the Aurora cluster"
+  type        = list(string)
+}
+
+variable "allowed_cidr_blocks" {
+  description = "The CIDR blocks allowed to access the cluster"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
+
+
+================================================================
+End of Codebase
+================================================================
