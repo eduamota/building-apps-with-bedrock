@@ -6,7 +6,7 @@ variable "cluster_identifier" {
 variable "engine_version" {
   description = "The engine version to use"
   type        = string
-  default     = "15.4"
+  default     = "15.14"
 }
 
 variable "database_name" {
