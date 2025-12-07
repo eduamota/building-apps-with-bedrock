@@ -10,7 +10,11 @@ st.title("Bedrock Chat Application")
 
 # Sidebar for configurations
 st.sidebar.header("Configuration")
-model_id = st.sidebar.selectbox("Select LLM Model", ["anthropic.claude-3-haiku-20240307-v1:0", "anthropic.claude-3-5-sonnet-20240620-v1:0"])
+model_id = st.sidebar.selectbox("Select LLM Model", [
+    "us.amazon.nova-micro-v1:0",
+    "us.amazon.nova-lite-v1:0", 
+    "us.amazon.nova-pro-v1:0"
+])
 kb_id = st.sidebar.text_input("Knowledge Base ID", "your-knowledge-base-id")
 temperature = st.sidebar.select_slider("Temperature", [i/10 for i in range(0,11)],1)
 top_p = st.sidebar.select_slider("Top_P", [i/1000 for i in range(0,1001)], 1)
