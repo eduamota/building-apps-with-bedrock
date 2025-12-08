@@ -42,7 +42,7 @@ st.sidebar.markdown("---")
 
 demo_mode = st.sidebar.selectbox(
     "Select Demo",
-    ["💬 Chat with Model", "📚 Knowledge Base RAG", "🛡️ Guardrails Demo", "🎨 Image Generation", "🎬 Video Generation"]
+    ["💬 Chat with Model", "📚 Knowledge Base RAG", "🛡️ Guardrails Demo", "🤖 Equipment Agent", "🔒 Secure Agent", "🎨 Image Generation", "🎬 Video Generation"]
 )
 
 st.sidebar.markdown("---")
@@ -183,7 +183,124 @@ elif demo_mode == "🛡️ Guardrails Demo":
             - Should I invest in stocks?
             """)
 
-# Demo 4: Image Generation
+# Demo 4: Equipment Agent
+elif demo_mode == "🤖 Equipment Agent":
+    st.markdown("Chat with equipment specialist agent (Notebook 6)")
+    
+    if 'kb' not in configs:
+        st.error("Knowledge Base not configured. Run notebook 5 first.")
+    else:
+        st.info("Equipment agent with Knowledge Base integration")
+        
+        agent_arn = st.text_input(
+            "Agent ARN (from AgentCore deployment):",
+            placeholder="arn:aws:bedrock-agentcore:us-east-1:123456789012:agent-runtime/equipment-agent"
+        )
+        
+        # Display chat messages
+        for message in st.session_state.messages:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
+        
+        # Chat input
+        if prompt := st.chat_input("Ask about equipment specs..."):
+            st.session_state.messages.append({"role": "user", "content": prompt})
+            with st.chat_message("user"):
+                st.markdown(prompt)
+            
+            if agent_arn:
+                with st.chat_message("assistant"):
+                    with st.spinner("Agent processing..."):
+                        import uuid
+                        
+                        agentcore = boto3.client('bedrock-agentcore', region_name=region)
+                        payload = json.dumps({"prompt": prompt}).encode()
+                        
+                        response = agentcore.invoke_agent_runtime(
+                            agentRuntimeArn=agent_arn,
+                            runtimeSessionId=str(uuid.uuid4()),
+                            payload=payload,
+                            qualifier="DEFAULT"
+                        )
+                        
+                        content = []
+                        for chunk in response.get("response", []):
+                            content.append(chunk.decode('utf-8'))
+                        
+                        result = json.loads(''.join(content))
+                        answer = result.get('result', 'No response')
+                        
+                        st.markdown(answer)
+                        st.session_state.messages.append({"role": "assistant", "content": answer})
+            else:
+                st.warning("Please enter Agent ARN to continue")
+
+# Demo 5: Secure Agent
+elif demo_mode == "🔒 Secure Agent":
+    st.markdown("Chat with secure agent (Notebook 8: Guardrails + KB)")
+    
+    if 'kb' not in configs or 'guardrail' not in configs:
+        st.error("Knowledge Base or Guardrails not configured. Run notebooks 5 and 7 first.")
+    else:
+        st.info("🛡️ Secure agent with Guardrails + Knowledge Base")
+        
+        agent_arn = st.text_input(
+            "Agent ARN (from AgentCore deployment):",
+            placeholder="arn:aws:bedrock-agentcore:us-east-1:123456789012:agent-runtime/secure-equipment-agent"
+        )
+        
+        # Display chat messages
+        for message in st.session_state.messages:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
+                if "blocked" in message:
+                    if message["blocked"]:
+                        st.error("🛡️ This message was blocked by guardrails")
+        
+        # Chat input
+        if prompt := st.chat_input("Ask about equipment (content safety enabled)..."):
+            st.session_state.messages.append({"role": "user", "content": prompt})
+            with st.chat_message("user"):
+                st.markdown(prompt)
+            
+            if agent_arn:
+                with st.chat_message("assistant"):
+                    with st.spinner("Secure agent processing..."):
+                        import uuid
+                        
+                        agentcore = boto3.client('bedrock-agentcore', region_name=region)
+                        payload = json.dumps({"prompt": prompt}).encode()
+                        
+                        response = agentcore.invoke_agent_runtime(
+                            agentRuntimeArn=agent_arn,
+                            runtimeSessionId=str(uuid.uuid4()),
+                            payload=payload,
+                            qualifier="DEFAULT"
+                        )
+                        
+                        content = []
+                        for chunk in response.get("response", []):
+                            content.append(chunk.decode('utf-8'))
+                        
+                        result = json.loads(''.join(content))
+                        answer = result.get('result', 'No response')
+                        blocked = result.get('blocked', False)
+                        
+                        if blocked:
+                            st.error("🛡️ Request blocked by safety policies")
+                            if 'reason' in result:
+                                st.caption(f"Reason: {result['reason']}")
+                        
+                        st.markdown(answer)
+                        st.session_state.messages.append({
+                            "role": "assistant",
+                            "content": answer,
+                            "blocked": blocked
+                        })
+            else:
+                st.warning("Please enter Agent ARN to continue")
+
+# Demo 6: Image Generation
 elif demo_mode == "🎨 Image Generation":
     st.markdown("Generate images with Nova Canvas")
     
@@ -221,7 +338,7 @@ elif demo_mode == "🎨 Image Generation":
                 
                 st.image(image, caption=prompt, use_container_width=True)
 
-# Demo 5: Video Generation
+# Demo 7: Video Generation
 elif demo_mode == "🎬 Video Generation":
     st.markdown("Generate videos with Nova Reel")
     
