@@ -258,10 +258,16 @@ if __name__ == "__main__":
 
 Then deploy:
 ```bash
-agentcore configure -e agent.py
+agentcore configure -e agent.py -r us-east-1
 agentcore deploy
 agentcore invoke '{"prompt": "Hello"}'
 ```
+
+**Test in UI:**
+1. Copy Agent ARN from deployment output
+2. Launch Streamlit UI: `cd UI && streamlit run app.py`
+3. Select "🤖 Equipment Agent" or "🔒 Secure Agent"
+4. Paste Agent ARN and start chatting
 
 ## 📊 Cost Optimization
 
@@ -309,6 +315,8 @@ streamlit run app.py
 | 💬 **Chat** | Conversation with models | None |
 | 📚 **RAG** | Knowledge Base queries | Run notebook 5 |
 | 🛡️ **Guardrails** | Content safety testing | Run notebook 7 |
+| 🤖 **Equipment Agent** | Agent with KB integration | Deploy notebook 6 to AgentCore |
+| 🔒 **Secure Agent** | Agent with Guardrails + KB | Deploy notebook 8 to AgentCore |
 | 🎨 **Images** | Generate with Nova Canvas | None |
 | 🎬 **Videos** | Generate with Nova Reel | None |
 
@@ -336,6 +344,12 @@ streamlit run app.py
 - Test safe and unsafe prompts
 - Real-time content filtering
 - Example test cases provided
+
+**Agent Demos:**
+- Equipment Agent: Chat with KB-enabled agent
+- Secure Agent: Agent with guardrails + KB
+- Requires AgentCore deployment (see notebooks 6 & 8)
+- Paste Agent ARN from deployment output
 
 ## 🚢 Deployment Options
 
