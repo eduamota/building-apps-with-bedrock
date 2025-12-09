@@ -18,7 +18,7 @@ if 'messages' not in st.session_state:
 @st.cache_resource
 def load_configs():
     configs = {}
-    config_path = Path(__file__).parent.parent / "Bedrock Agents"
+    config_path = Path(__file__).absolute().parent.parent / "Bedrock Agents"
     
     # Load KB config
     kb_config_file = config_path / "kb_config.json"
