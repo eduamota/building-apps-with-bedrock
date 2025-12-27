@@ -1,0 +1,22 @@
+{
+  "content_filter": {
+    "id": "jkcm1dbq0zrr",
+    "version": "DRAFT"
+  },
+  "pii_redaction": {
+    "id": "aevrweb1his0",
+    "version": "DRAFT"
+  },
+  "topic_blocking": {
+    "id": "uppmittcs5wj",
+    "version": "DRAFT"
+  },
+  "word_filter": {
+    "id": "c2wrrpe5iypx",
+    "version": "DRAFT"
+  },
+  "comprehensive": {
+    "id": "n1zy4fcq73cn",
+    "version": "DRAFT"
+  }
+}

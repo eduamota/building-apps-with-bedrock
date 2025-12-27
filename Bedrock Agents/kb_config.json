@@ -1,0 +1,10 @@
+{
+  "knowledge_base_id": "KNS7FE5GSN",
+  "data_source_id": "ND81YR8KNX",
+  "vector_bucket": "equipment-specs-kb-vectors-058264544288",
+  "vector_index": "equipment-specs-index",
+  "vector_index_arn": "arn:aws:s3vectors:us-east-1:058264544288:bucket/equipment-specs-kb-vectors-058264544288/index/equipment-specs-index",
+  "docs_bucket": "equipment-specs-kb-docs-058264544288",
+  "role_arn": "arn:aws:iam::058264544288:role/equipment-specs-kb-kb-role",
+  "region": "us-east-1"
+}

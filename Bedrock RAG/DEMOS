@@ -1,0 +1,46 @@
+Demo 1: Basic RAG with Bedrock Knowledge Bases
+Pattern: Fully Managed RAG (Travel Expense Policy)
+
+S3 documents → Bedrock KB → Aurora pgvector → Claude 3.5 Sonnet
+
+Simple retrieve_and_generate() API
+
+Demo 2: Cost-Effective RAG with S3 Vectors ⭐ NEW
+Pattern: S3 Native Vector Storage (90% cheaper than traditional vector DBs)
+
+Direct S3 vector bucket with native indexing
+
+boto3 s3vectors client for insert/query operations
+
+Titan Embeddings → S3 vector index → Claude generation
+
+Cost: ~$11/month for 10M vectors vs $100-200/month for managed DBs
+
+Key Learning: Perfect for cost-sensitive, large-scale RAG applications
+
+Demo 3: Hybrid Search RAG (Vector + Keyword)
+Pattern: Advanced Retrieval with Dual Search
+
+pgvector cosine similarity + PostgreSQL full-text search
+
+Reciprocal Rank Fusion (RRF) merging
+
+Query transformation
+
+Demo 4: RAG with Re-ranking Pipeline
+Pattern: Advanced Modular RAG with Quality Improvement
+
+Initial retrieval (top 20) → Re-ranker (top 5) → Generation
+
+SageMaker re-ranking model
+
+Relevance scoring
+
+Demo 5: Multi-Collection RAG with Metadata Filtering
+Pattern: Enterprise RAG with Collections
+
+Collection routing (Technical Docs, FAQs, Memos)
+
+Metadata-based filtering
+
+Collection-specific prompts
