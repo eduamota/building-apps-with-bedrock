@@ -4,6 +4,9 @@ A GenAI application demonstrating Amazon Bedrock Knowledge Base (RAG) and Agents
 
 ## Architecture
 
+![Heavy Machinery Assistant Architecture](generated-diagrams/heavy_machinery_architecture.png)
+
+
 - **VPC**: Multi-AZ setup with public/private subnets
 - **Database**: Aurora Serverless v2 PostgreSQL 15.14 with pgvector
 - **Storage**: S3 bucket for document storage (spec sheets)
