@@ -8,6 +8,7 @@ A complete serverless RAG (Retrieval-Augmented Generation) application using Ama
 - **AWS Lambda**: Serverless compute for API operations
 - **API Gateway**: RESTful API with authentication
 - **Amazon Bedrock**: Titan embeddings + Nova Pro for RAG
+- **Bedrock Guardrails**: Content safety filtering
 - **Streamlit**: Chat interface UI
 
 ## API Endpoints
@@ -59,6 +60,9 @@ curl -X POST https://<API_ENDPOINT>/prod/ask \
   -d '{"question":"What is serverless computing?"}'
 ```
 
+**Safe Response**: Full detailed answer  
+**Unsafe Content**: "The generated text has been blocked by our content filters."
+
 ### 5. Run Streamlit UI
 
 ```bash
@@ -73,6 +77,7 @@ Environment variables in Lambda:
 - `VECTOR_BUCKET`: S3 Vectors bucket name
 - `VECTOR_INDEX`: Vector index name
 - `EMBEDDING_MODEL`: Bedrock embedding model
+- `GUARDRAIL_ID`: Bedrock Guardrail identifier
 
 ## Security
 
@@ -80,6 +85,7 @@ Environment variables in Lambda:
 - Rate limiting: 100 req/sec, 10K req/day
 - IAM roles with least privilege access
 - CORS enabled for web clients
+- **Bedrock Guardrails**: Content safety filtering (hate, violence, sexual content)
 
 ## Cost Optimization
 

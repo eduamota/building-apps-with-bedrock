@@ -12,6 +12,7 @@ s3vectors = boto3.client('s3vectors')
 VECTOR_BUCKET = os.environ['VECTOR_BUCKET']
 VECTOR_INDEX = os.environ['VECTOR_INDEX']
 EMBEDDING_MODEL = os.environ['EMBEDDING_MODEL']
+GUARDRAIL_ID = os.environ['GUARDRAIL_ID']
 
 def get_embedding(text: str) -> List[float]:
     """Get embedding using Titan model"""
@@ -153,7 +154,9 @@ def ask_question(question):
             body=json.dumps({
                 "messages": [{"role": "user", "content": [{"text": prompt}]}],
                 "inferenceConfig": {"maxTokens": 500, "temperature": 0.7}
-            })
+            }),
+            guardrailIdentifier=GUARDRAIL_ID,
+            guardrailVersion='DRAFT'
         )
         
         answer = json.loads(nova_response['body'].read())['output']['message']['content'][0]['text']

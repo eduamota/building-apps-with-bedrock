@@ -4,6 +4,7 @@ from aws_cdk import (
     aws_lambda as _lambda,
     aws_apigateway as apigateway,
     aws_iam as iam,
+    aws_bedrock as bedrock,
     Duration,
 )
 from constructs import Construct
@@ -13,6 +14,33 @@ class S3VectorsAppStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
+
+        # Bedrock Guardrail
+        guardrail = bedrock.CfnGuardrail(
+            self, "BasicSafetyGuardrail",
+            name="gdrail-basic-safety",
+            blocked_input_messaging="I can't process that request. Please ask something else.",
+            blocked_outputs_messaging="I can't provide that information. Please ask something else.",
+            content_policy_config=bedrock.CfnGuardrail.ContentPolicyConfigProperty(
+                filters_config=[
+                    bedrock.CfnGuardrail.ContentFilterConfigProperty(
+                        input_strength="HIGH",
+                        output_strength="HIGH",
+                        type="HATE"
+                    ),
+                    bedrock.CfnGuardrail.ContentFilterConfigProperty(
+                        input_strength="HIGH", 
+                        output_strength="HIGH",
+                        type="VIOLENCE"
+                    ),
+                    bedrock.CfnGuardrail.ContentFilterConfigProperty(
+                        input_strength="HIGH",
+                        output_strength="HIGH", 
+                        type="SEXUAL"
+                    )
+                ]
+            )
+        )
 
         # IAM role for Lambda to access S3 Vectors
         lambda_role = iam.Role(
@@ -46,6 +74,13 @@ class S3VectorsAppStack(Stack):
                                 "arn:aws:bedrock:*::foundation-model/amazon.titan-embed-text-v1",
                                 "arn:aws:bedrock:*::foundation-model/amazon.nova-pro-v1:0"
                             ]
+                        ),
+                        iam.PolicyStatement(
+                            effect=iam.Effect.ALLOW,
+                            actions=[
+                                "bedrock:ApplyGuardrail"
+                            ],
+                            resources=[guardrail.attr_guardrail_arn]
                         )
                     ]
                 )
@@ -63,7 +98,8 @@ class S3VectorsAppStack(Stack):
             environment={
                 "VECTOR_BUCKET": "s3vectors-app-bucket",
                 "VECTOR_INDEX": "documents-index",
-                "EMBEDDING_MODEL": "amazon.titan-embed-text-v1"
+                "EMBEDDING_MODEL": "amazon.titan-embed-text-v1",
+                "GUARDRAIL_ID": guardrail.attr_guardrail_id
             }
         )
 
