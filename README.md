@@ -25,6 +25,21 @@ building-apps-with-bedrock/
 │   ├── 7-bedrock_guardrails.ipynb
 │   └── 8-strands_guardrails_kb_agentcore.ipynb
 │
+├── Bedrock RAG/               # RAG implementations
+│   ├── Demo4-Re-ranking-Pipeline/
+│   │   ├── demo4_reranking_pipeline.ipynb
+│   │   └── demo4_s3_vectors_reranking.ipynb
+│   └── Demo5-Multi-Collection/
+│       ├── demo5_multi_collection.ipynb
+│       └── demo5_s3_vectors_multi_collection.ipynb
+│
+├── S3VectorsApp/              # Complete RAG application
+│   ├── lambda/                # Lambda function code
+│   ├── s3vectors_app/         # CDK infrastructure
+│   ├── streamlit_app.py       # Chat UI
+│   ├── app.py                 # CDK app entry point
+│   └── README.md              # Deployment guide
+│
 ├── UI/                        # Interactive demo interface
 │   ├── app.py                 # Streamlit application
 │   ├── requirements.txt
@@ -97,6 +112,29 @@ Progress through agent complexity:
 - Knowledge Base with S3 Vectors (90% cost savings)
 - Guardrails for content safety
 - Production-ready secure agents
+
+#### 4️⃣ **RAG Implementations** (Bedrock RAG/)
+Advanced RAG patterns and optimizations:
+
+**Re-ranking Pipeline:**
+- Two-stage retrieval with LLM re-ranking
+- Improved answer quality through refinement
+- OpenSearch vs S3 Vectors comparison
+
+**Multi-Collection RAG:**
+- Separate indexes for different content types
+- Smart query routing and collection selection
+- Enterprise-grade content organization
+
+#### 5️⃣ **Production Application** (S3VectorsApp/)
+Complete serverless RAG application:
+
+**Features:**
+- API Gateway with authentication
+- Lambda-based vector operations
+- Streamlit chat interface
+- CDK infrastructure as code
+- Production security practices
 
 ## 📖 Key Concepts
 
@@ -171,6 +209,31 @@ Progress through agent complexity:
 3. Choose pattern: Agents as Tools, Swarm, Graph, or Workflow
 
 **Result:** Coordinated multi-agent system
+
+### Building a Production RAG Application
+
+**Goal:** Complete serverless RAG app with authentication and UI
+
+**Steps:**
+1. Navigate to `S3VectorsApp/` folder
+2. Follow deployment guide in README
+3. Deploy with CDK: `cdk deploy`
+4. Get API key and test endpoints
+5. Launch Streamlit UI for chat interface
+
+**Result:** Production-ready RAG application with API Gateway, Lambda, and chat UI
+
+### Advanced RAG Patterns
+
+**Goal:** Implement sophisticated retrieval strategies
+
+**Steps:**
+1. Run `Bedrock RAG/Demo4-Re-ranking-Pipeline/` - Two-stage retrieval
+2. Run `Bedrock RAG/Demo5-Multi-Collection/` - Multi-index RAG
+3. Compare OpenSearch vs S3 Vectors performance
+4. Implement in production application
+
+**Result:** Optimized RAG with improved accuracy and cost efficiency
 
 ### Async Media Generation
 
