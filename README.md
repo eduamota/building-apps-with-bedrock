@@ -25,13 +25,15 @@ building-apps-with-bedrock/
 │   ├── 7-bedrock_guardrails.ipynb
 │   └── 8-strands_guardrails_kb_agentcore.ipynb
 │
-├── Bedrock RAG/               # RAG implementations
-│   ├── Demo4-Re-ranking-Pipeline/
-│   │   ├── demo4_reranking_pipeline.ipynb
-│   │   └── demo4_s3_vectors_reranking.ipynb
-│   └── Demo5-Multi-Collection/
-│       ├── demo5_multi_collection.ipynb
-│       └── demo5_s3_vectors_multi_collection.ipynb
+├── Bedrock RAG/               # RAG implementations & patterns
+│   ├── Demo1-Basic-RAG/       # Fully managed RAG with Aurora
+│   ├── Demo2-S3-Vectors/      # Cost-effective S3 native vectors
+│   ├── Demo3-Hybrid-Search/   # Vector + keyword search fusion
+│   ├── Demo4-Reranking-Pipeline/ # Two-stage retrieval with re-ranking
+│   ├── Demo5-Multi-Collection/ # Enterprise multi-collection RAG
+│   ├── Demo-Chunking-Strategies/ # Document chunking optimization
+│   ├── Demo-RAGAS-Evaluation/ # RAG evaluation metrics
+│   └── embedding_comparison_demo.ipynb # Embedding model comparison
 │
 ├── S3VectorsApp/              # Complete RAG application
 │   ├── lambda/                # Lambda function code
@@ -114,17 +116,19 @@ Progress through agent complexity:
 - Production-ready secure agents
 
 #### 4️⃣ **RAG Implementations** (Bedrock RAG/)
-Advanced RAG patterns and optimizations:
+Comprehensive RAG patterns from basic to advanced:
 
-**Re-ranking Pipeline:**
-- Two-stage retrieval with LLM re-ranking
-- Improved answer quality through refinement
-- OpenSearch vs S3 Vectors comparison
+**Foundation RAG:**
+- Basic RAG with Bedrock Knowledge Bases
+- S3 Vectors for 90% cost reduction
+- Embedding model comparison and selection
 
-**Multi-Collection RAG:**
-- Separate indexes for different content types
-- Smart query routing and collection selection
-- Enterprise-grade content organization
+**Advanced Patterns:**
+- Hybrid search (vector + keyword fusion)
+- Re-ranking pipeline for improved accuracy
+- Multi-collection enterprise RAG
+- Document chunking strategies
+- RAG evaluation with RAGAS metrics
 
 #### 5️⃣ **Production Application** (S3VectorsApp/)
 Complete serverless RAG application:
@@ -225,15 +229,19 @@ Complete serverless RAG application:
 
 ### Advanced RAG Patterns
 
-**Goal:** Implement sophisticated retrieval strategies
+**Goal:** Master comprehensive RAG implementations and optimizations
 
 **Steps:**
-1. Run `Bedrock RAG/Demo4-Re-ranking-Pipeline/` - Two-stage retrieval
-2. Run `Bedrock RAG/Demo5-Multi-Collection/` - Multi-index RAG
-3. Compare OpenSearch vs S3 Vectors performance
-4. Implement in production application
+1. **Foundation**: `Demo1-Basic-RAG/` - Fully managed Bedrock KB
+2. **Cost Optimization**: `Demo2-S3-Vectors/` - 90% cost reduction
+3. **Search Enhancement**: `Demo3-Hybrid-Search/` - Vector + keyword fusion
+4. **Quality Improvement**: `Demo4-Reranking-Pipeline/` - Two-stage retrieval
+5. **Enterprise Scale**: `Demo5-Multi-Collection/` - Multi-index routing
+6. **Optimization**: `Demo-Chunking-Strategies/` - Document processing
+7. **Evaluation**: `Demo-RAGAS-Evaluation/` - Quality metrics
+8. **Model Selection**: `embedding_comparison_demo.ipynb` - Embedding comparison
 
-**Result:** Optimized RAG with improved accuracy and cost efficiency
+**Result:** Complete RAG expertise from basic to production-grade implementations
 
 ### Async Media Generation
 
