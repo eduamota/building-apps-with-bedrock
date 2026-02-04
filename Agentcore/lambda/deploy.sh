@@ -7,24 +7,15 @@ REGION="us-east-1"
 RUNTIME="python3.12"
 TIMEOUT=60
 MEMORY=512
+LAYER_ARN="arn:aws:lambda:us-east-1:856699698935:layer:strands-agents-py3_12-x86_64:1"
 
 echo "🚀 Deploying Strands Agent to Lambda..."
 
-# Create deployment package
+# Create deployment package (just the handler code)
 echo "📦 Creating deployment package..."
-rm -rf package lambda-deployment.zip
-mkdir -p package
-
-# Install dependencies
-pip install -r requirements.txt -t package/ --quiet
-
-# Copy Lambda function
-cp lambda_function.py package/
-
-# Create zip
-cd package
-zip -r ../lambda-deployment.zip . -q
-cd ..
+cd "$(dirname "$0")"
+rm -f agent-deployment.zip
+zip -j agent-deployment.zip agent_handler.py
 
 echo "✅ Deployment package created"
 
@@ -34,7 +25,7 @@ if ! aws iam get-role --role-name $ROLE_NAME 2>/dev/null; then
     echo "📝 Creating IAM role..."
     
     # Create trust policy
-    cat > trust-policy.json <<EOF
+    cat > /tmp/trust-policy.json <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -52,7 +43,7 @@ EOF
     # Create role
     aws iam create-role \
         --role-name $ROLE_NAME \
-        --assume-role-policy-document file://trust-policy.json \
+        --assume-role-policy-document file:///tmp/trust-policy.json \
         --region $REGION
 
     # Attach policies
@@ -67,7 +58,7 @@ EOF
     echo "⏳ Waiting for role to propagate..."
     sleep 10
     
-    rm trust-policy.json
+    rm /tmp/trust-policy.json
 fi
 
 # Get role ARN
@@ -79,13 +70,14 @@ if aws lambda get-function --function-name $FUNCTION_NAME --region $REGION 2>/de
     echo "🔄 Updating existing function..."
     aws lambda update-function-code \
         --function-name $FUNCTION_NAME \
-        --zip-file fileb://lambda-deployment.zip \
+        --zip-file fileb://agent-deployment.zip \
         --region $REGION
     
     aws lambda update-function-configuration \
         --function-name $FUNCTION_NAME \
         --timeout $TIMEOUT \
         --memory-size $MEMORY \
+        --layers $LAYER_ARN \
         --region $REGION
 else
     echo "🆕 Creating new function..."
@@ -93,33 +85,24 @@ else
         --function-name $FUNCTION_NAME \
         --runtime $RUNTIME \
         --role $ROLE_ARN \
-        --handler lambda_function.lambda_handler \
-        --zip-file fileb://lambda-deployment.zip \
+        --handler agent_handler.handler \
+        --zip-file fileb://agent-deployment.zip \
         --timeout $TIMEOUT \
         --memory-size $MEMORY \
+        --layers $LAYER_ARN \
         --region $REGION
+    
+    # Wait for function to be active
+    echo "⏳ Waiting for function to be active..."
+    aws lambda wait function-active --function-name $FUNCTION_NAME --region $REGION
 fi
 
 echo "✅ Lambda function deployed successfully!"
 
-# Test the function
-echo ""
-echo "🧪 Testing function..."
-aws lambda invoke \
-    --function-name $FUNCTION_NAME \
-    --payload '{"query": "What is 2+2?"}' \
-    --region $REGION \
-    response.json
-
-echo ""
-echo "📄 Response:"
-cat response.json | jq .
-rm response.json
-
+# Create function URL if it doesn't exist
 echo ""
 echo "🌐 Creating Lambda Function URL..."
 
-# Create function URL if it doesn't exist
 if ! aws lambda get-function-url-config --function-name $FUNCTION_NAME --region $REGION 2>/dev/null; then
     aws lambda create-function-url-config \
         --function-name $FUNCTION_NAME \
@@ -155,12 +138,15 @@ echo "📍 Function URL:"
 echo "$FUNCTION_URL"
 
 echo ""
-echo "🧪 Test with curl:"
-echo "curl -X POST $FUNCTION_URL -H 'Content-Type: application/json' -d '{\"query\": \"What is AI?\"}'"
+echo "🧪 Test with AWS CLI:"
+echo "aws lambda invoke --function-name $FUNCTION_NAME --payload '{\"prompt\": \"What is AI?\"}' --region $REGION response.json && cat response.json"
 
 echo ""
-echo "Or with httpie:"
-echo "http POST $FUNCTION_URL query='What is AI?'"
+echo "🧪 Test with curl:"
+echo "curl -X POST $FUNCTION_URL -H 'Content-Type: application/json' -d '{\"prompt\": \"What is AI?\"}'"
 
 # Cleanup
-rm -rf package lambda-deployment.zip
+rm -f agent-deployment.zip
+
+echo ""
+echo "✨ Done!"
