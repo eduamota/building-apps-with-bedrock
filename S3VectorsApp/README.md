@@ -4,6 +4,8 @@ A complete serverless RAG (Retrieval-Augmented Generation) application using Ama
 
 ## Architecture
 
+![Architecture Diagram](generated-diagrams/s3vectors_architecture.png)
+
 - **S3 Vectors**: Native AWS vector storage for document embeddings
 - **AWS Lambda**: Serverless compute for API operations
 - **API Gateway**: RESTful API with authentication

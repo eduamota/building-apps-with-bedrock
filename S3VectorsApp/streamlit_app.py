@@ -4,7 +4,7 @@ import json
 import os
 
 # API endpoint
-API_URL = "https://fz6ys48n9e.execute-api.us-east-1.amazonaws.com/prod"
+API_URL = "https://mh0u3dldnf.execute-api.us-east-1.amazonaws.com/prod"
 
 st.title("S3 Vectors RAG Chat")
 
