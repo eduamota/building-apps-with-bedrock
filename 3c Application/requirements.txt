@@ -1,0 +1,17 @@
+# AWS SDK
+boto3>=1.35.0
+botocore>=1.35.0
+
+# Streamlit apps
+streamlit>=1.40.0
+
+# Jupyter notebooks
+jupyter>=1.1.1
+jupyterlab>=4.3.0
+ipykernel>=6.29.0
+
+# Image processing
+Pillow>=11.0.0
+
+# Data handling
+pandas>=2.2.0
