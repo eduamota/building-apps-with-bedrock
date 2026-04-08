@@ -6,16 +6,48 @@ A comprehensive guide to building production-ready AI applications using Amazon 
 
 ```
 building-apps-with-bedrock/
-├── Basic Bedrock/              # Foundation concepts
+│
+├── 1 Intro_to_Bedrock_Presentation/   # Presentation slides
+│   ├── Module-1-GenAI-on-AWS.pdf
+│   ├── Module-2-Getting-to-Know-Amazon-Bedrock.pdf
+│   ├── Module-3-RAG-on-Bedrock.pdf
+│   ├── Module-4-Agents-on-Amazon-Bedrock.pdf
+│   ├── Module-5-LLM-Security-and-Observability-on-Bedrock.pdf
+│   └── Module-6-Cost-Optimization.pdf
+│
+├── 1a Basic Bedrock/                   # Foundation concepts
 │   ├── 1-bedrock_intro.ipynb
 │   ├── 2-image_generation.ipynb
 │   ├── 3-video_generation.ipynb
 │   └── 4-inference_profiles.ipynb
 │
-├── Async Pipeline/             # Serverless async workflows
-│   └── async_pipeline_setup.ipynb
+├── 1b Async Pipeline/                  # Serverless async workflows
+│   ├── async_pipeline_setup.ipynb
+│   └── setup_infrastructure.py
 │
-├── Bedrock Agents/            # Agent development & deployment
+├── 2 RAG_in_AWS/                       # Section header
+│
+├── 2a Bedrock RAG/                     # RAG implementations & patterns
+│   ├── Demo1-Basic-RAG/                # Fully managed RAG with Aurora
+│   ├── Demo2-S3-Vectors/               # Cost-effective S3 native vectors
+│   ├── Demo3-Hybrid-Search/            # Vector + keyword search fusion
+│   ├── Demo4-Reranking-Pipeline/       # Two-stage retrieval with re-ranking
+│   ├── Demo5-Multi-Collection/         # Enterprise multi-collection RAG
+│   ├── Demo-Chunking-Strategies/       # Document chunking optimization
+│   ├── Demo-RAGAS-Evaluation/          # RAG evaluation metrics
+│   ├── embedding_comparison_demo.ipynb # Embedding model comparison
+│   └── vector_database_cost_comparison.ipynb
+│
+├── 2b S3VectorsApp/                    # Complete RAG application (CDK)
+│   ├── lambda/                         # Lambda function code
+│   ├── s3vectors_app/                  # CDK infrastructure
+│   ├── streamlit_app.py                # Chat UI
+│   ├── app.py                          # CDK app entry point
+│   └── README.md                       # Deployment guide
+│
+├── 3 Agents_in_AWS/                    # Section header
+│
+├── 3a Bedrock_Agents/                  # Agent development & deployment
 │   ├── 1-basic_agent_setup.ipynb
 │   ├── 2-agent_with_knowledge_base.ipynb
 │   ├── 3-multi_agent_collaboration.ipynb
@@ -25,60 +57,43 @@ building-apps-with-bedrock/
 │   ├── 7-bedrock_guardrails.ipynb
 │   └── 8-strands_guardrails_kb_agentcore.ipynb
 │
-├── Bedrock RAG/               # RAG implementations & patterns
-│   ├── Demo1-Basic-RAG/       # Fully managed RAG with Aurora
-│   ├── Demo2-S3-Vectors/      # Cost-effective S3 native vectors
-│   ├── Demo3-Hybrid-Search/   # Vector + keyword search fusion
-│   ├── Demo4-Reranking-Pipeline/ # Two-stage retrieval with re-ranking
-│   ├── Demo5-Multi-Collection/ # Enterprise multi-collection RAG
-│   ├── Demo-Chunking-Strategies/ # Document chunking optimization
-│   ├── Demo-RAGAS-Evaluation/ # RAG evaluation metrics
-│   └── embedding_comparison_demo.ipynb # Embedding model comparison
+├── 3b Agentcore/                       # AgentCore hands-on exercises
+│   ├── 1-calculator_agent.ipynb
+│   ├── 1a-deploy_agentcore.ipynb
+│   ├── 2-demo_tools.ipynb
+│   ├── 3-demo-agents_as_tools.ipynb
+│   ├── 4-demo-graph_architecture.ipynb
+│   ├── 5-error_handling_session_exercise.ipynb
+│   ├── 6-agentcore_memory_demo.ipynb
+│   └── exerciseA/                      # Practice exercises
 │
-├── S3VectorsApp/              # Complete RAG application
-│   ├── lambda/                # Lambda function code
-│   ├── s3vectors_app/         # CDK infrastructure
-│   ├── streamlit_app.py       # Chat UI
-│   ├── app.py                 # CDK app entry point
-│   └── README.md              # Deployment guide
+├── 3c Application/                     # Heavy Machinery Assistant (Full Stack)
+│   ├── terraform/                      # Infrastructure as Code
+│   │   ├── 01_storage_stack/           # VPC, Aurora, S3
+│   │   ├── 02_bedrock_rag_stack/       # Knowledge Base
+│   │   └── modules/                    # Reusable modules
+│   ├── pre-requisites/
+│   │   ├── documents/spec-sheets/      # Equipment specifications
+│   │   └── postgres_data/              # Database initialization
+│   ├── rag_app/                        # RAG Streamlit app
+│   ├── agent_app/                      # Agent Streamlit app
+│   ├── python_sdk/                     # SDK-based deployment
+│   └── README.md                       # Full deployment guide
 │
-├── Lambda/                    # Strands Agent Lambda deployment
-│   ├── agent_handler.py       # Lambda handler with Strands
-│   ├── deploy.sh              # Automated deployment script
-│   ├── requirements.txt       # Python dependencies
-│   └── README.md              # Deployment guide
+├── 3d Lambda/                          # Strands Agent Lambda deployment
+│   ├── agent_handler.py                # Lambda handler with Strands
+│   ├── deploy.sh                       # Automated deployment script
+│   ├── requirements.txt
+│   └── README.md                       # Deployment guide
 │
-├── Agentcore/                 # AgentCore hands-on exercises
-│   ├── 1-calculator_agent.ipynb           # Basic agent with tools
-│   ├── 1a-deploy_agentcore.ipynb          # AgentCore deployment
-│   ├── 2-demo_tools.ipynb                 # Tool creation patterns
-│   ├── 3-demo-agents_as_tools.ipynb       # Multi-agent patterns
-│   ├── 4-demo-graph_architecture.ipynb    # Graph-based workflows
-│   ├── 5-error_handling_session_exercise.ipynb  # Error handling
-│   ├── 6-agentcore_memory_demo.ipynb      # Memory configuration
-│   └── exerciseA/                         # Practice exercises
-│
-├── UI/                        # Interactive demo interface
-│   ├── app.py                 # Streamlit application
+├── Sample_UI_for/                      # Interactive demo interface
+│   ├── app.py                          # Streamlit application
 │   ├── requirements.txt
 │   └── README.md
 │
-├── Application/               # Heavy Machinery Assistant (Full Stack)
-│   ├── terraform/             # Infrastructure as Code
-│   │   ├── 01_storage_stack/  # VPC, Aurora, S3
-│   │   ├── 02_bedrock_rag_stack/  # Knowledge Base
-│   │   └── modules/           # Reusable modules
-│   ├── pre-requisites/
-│   │   ├── documents/spec-sheets/  # Equipment specifications
-│   │   └── postgres_data/     # Database initialization
-│   ├── rag_app/               # RAG Streamlit app
-│   ├── agent_app/             # Agent Streamlit app
-│   ├── python_sdk/            # SDK-based deployment
-│   └── README.md              # Full deployment guide
-│
-├── AGENTCORE_SUMMARY.md      # AgentCore platform guide
-├── STRANDS_AGENTS_SUMMARY.md # Strands framework guide
-└── BEDROCK_KB_S3_VECTORS_SUMMARY.md  # Knowledge Base guide
+├── AGENTCORE_SUMMARY.md                # AgentCore platform guide
+├── STRANDS_AGENTS_SUMMARY.md           # Strands framework guide
+└── BEDROCK_KB_S3_VECTORS_SUMMARY.md    # Knowledge Base + S3 Vectors guide
 ```
 
 ## 🚀 Quick Start
@@ -98,7 +113,7 @@ aws configure
 Launch the Streamlit interface to explore all capabilities:
 
 ```bash
-cd UI
+cd Sample_UI_for
 pip install -r requirements.txt
 streamlit run app.py
 ```
@@ -114,34 +129,34 @@ Open `http://localhost:8501` in your browser to start exploring!
 
 ### Learning Path
 
-#### 1️⃣ **Foundations** (Basic Bedrock/)
+#### 1️⃣ **Foundations** (`1a Basic Bedrock/`)
 Start here to understand core Bedrock capabilities:
 - **Bedrock Intro** - Models, APIs, basic usage
 - **Image Generation** - Nova Canvas for images
 - **Video Generation** - Nova Reel for videos
 - **Inference Profiles** - System vs Application profiles
 
-#### 2️⃣ **Async Workflows** (Async Pipeline/)
+#### 2️⃣ **Async Workflows** (`1b Async Pipeline/`)
 Build serverless async pipelines:
 - API Gateway + Step Functions + Lambda
 - Image-to-video generation pipeline
 - Status tracking and S3 artifact storage
 
-#### 3️⃣ **Agent Development** (Bedrock Agents/ + Agentcore/)
+#### 3️⃣ **Agent Development** (`3a Bedrock_Agents/` + `3b Agentcore/`)
 Progress through agent complexity:
 
-**Basic Agents (Bedrock Agents/):**
+**Basic Agents (`3a Bedrock_Agents/`):**
 - Traditional Bedrock Agents with action groups
 - Knowledge Base integration
 - Multi-agent collaboration patterns
 
-**Advanced Agents (Bedrock Agents/):**
+**Advanced Agents (`3a Bedrock_Agents/`):**
 - Strands framework with AgentCore deployment
 - Knowledge Base with S3 Vectors (90% cost savings)
 - Guardrails for content safety
 - Production-ready secure agents
 
-**Hands-on AgentCore Exercises (Agentcore/):**
+**Hands-on AgentCore Exercises (`3b Agentcore/`):**
 - `1-calculator_agent.ipynb` - Basic agent with tools
 - `1a-deploy_agentcore.ipynb` - AgentCore deployment
 - `2-demo_tools.ipynb` - Tool creation patterns
@@ -150,7 +165,7 @@ Progress through agent complexity:
 - `5-error_handling_session_exercise.ipynb` - Error handling
 - `6-agentcore_memory_demo.ipynb` - Memory configuration
 
-#### 4️⃣ **RAG Implementations** (Bedrock RAG/)
+#### 4️⃣ **RAG Implementations** (`2a Bedrock RAG/`)
 Comprehensive RAG patterns from basic to advanced:
 
 **Foundation RAG:**
@@ -173,21 +188,21 @@ Comprehensive RAG patterns from basic to advanced:
 
 #### 5️⃣ **Production Applications**
 
-**S3VectorsApp/** - Complete serverless RAG application:
+**`2b S3VectorsApp/`** - Complete serverless RAG application:
 - API Gateway with authentication
 - Lambda-based vector operations
 - Streamlit chat interface
 - CDK infrastructure as code
 - Production security practices
 
-**Lambda/** - Strands Agent Lambda deployment:
+**`3d Lambda/`** - Strands Agent Lambda deployment:
 - Deploy Strands agents to AWS Lambda
 - Public Function URL for testing
 - Official Strands Lambda layers
 - Automated deployment script
 - Tool integration examples
 
-**Application/** - Heavy Machinery Assistant (Full Stack):
+**`3c Application/`** - Heavy Machinery Assistant (Full Stack):
 - Multi-AZ VPC with Aurora Serverless v2
 - Bedrock Knowledge Base with pgvector
 - Terraform infrastructure as code
@@ -228,8 +243,6 @@ Comprehensive RAG patterns from basic to advanced:
 
 📄 See [AGENTCORE_SUMMARY.md](AGENTCORE_SUMMARY.md) for details
 
-### Strands Agents Framework
-
 **What:** Open-source, lightweight Python SDK for building AI agents  
 **Why:** Model-driven approach, framework-agnostic, minimal code  
 **When:** Rapid agent development with any LLM provider
@@ -254,8 +267,6 @@ Comprehensive RAG patterns from basic to advanced:
 
 📄 See [STRANDS_AGENTS_SUMMARY.md](STRANDS_AGENTS_SUMMARY.md) for details
 
-### Knowledge Bases with S3 Vectors
-
 **What:** Cost-effective RAG with native S3 vector storage  
 **Why:** 90% cost reduction vs traditional vector databases  
 **When:** Large-scale knowledge bases with subsecond latency tolerance
@@ -276,8 +287,6 @@ Comprehensive RAG patterns from basic to advanced:
 
 📄 See [BEDROCK_KB_S3_VECTORS_SUMMARY.md](BEDROCK_KB_S3_VECTORS_SUMMARY.md) for details
 
-### Lambda Deployment for Strands Agents
-
 **What:** Deploy Strands agents to AWS Lambda with public Function URLs  
 **Why:** Serverless, pay-per-use, no infrastructure management  
 **When:** Simple agent deployments without persistent memory needs
@@ -293,7 +302,7 @@ Comprehensive RAG patterns from basic to advanced:
 arn:aws:lambda:us-east-1:856699698935:layer:strands-agents-py3_12-x86_64:1
 ```
 
-📄 See [Lambda/README.md](Lambda/README.md) for details
+📄 See [`3d Lambda/README.md`](3d%20Lambda/README.md) for details
 
 ## 🎯 Use Case Guides
 
@@ -302,9 +311,9 @@ arn:aws:lambda:us-east-1:856699698935:layer:strands-agents-py3_12-x86_64:1
 **Goal:** Production-ready agent with knowledge base and content safety
 
 **Steps:**
-1. Run `5-knowledge_base_s3_vectors.ipynb` - Create KB with equipment specs
-2. Run `7-bedrock_guardrails.ipynb` - Set up content filters
-3. Run `8-strands_guardrails_kb_agentcore.ipynb` - Deploy secure agent
+1. Run `3a Bedrock_Agents/5-knowledge_base_s3_vectors.ipynb` - Create KB with equipment specs
+2. Run `3a Bedrock_Agents/7-bedrock_guardrails.ipynb` - Set up content filters
+3. Run `3a Bedrock_Agents/8-strands_guardrails_kb_agentcore.ipynb` - Deploy secure agent
 
 **Result:** Agent with RAG, guardrails, deployed to AgentCore
 
@@ -313,7 +322,7 @@ arn:aws:lambda:us-east-1:856699698935:layer:strands-agents-py3_12-x86_64:1
 **Goal:** Serverless agent deployment with public Function URL
 
 **Steps:**
-1. Navigate to `Lambda/` folder
+1. Navigate to `3d Lambda/` folder
 2. Customize `agent_handler.py` with your agent logic
 3. Run `./deploy.sh` to deploy
 4. Test with curl or AWS CLI
@@ -325,7 +334,7 @@ arn:aws:lambda:us-east-1:856699698935:layer:strands-agents-py3_12-x86_64:1
 **Goal:** Complete GenAI application with database, RAG, and agents
 
 **Steps:**
-1. Navigate to `Application/` folder
+1. Navigate to `3c Application/` folder
 2. Deploy storage stack: `cd terraform/01_storage_stack && terraform apply`
 3. Initialize Aurora database with equipment data
 4. Upload spec sheets to S3
@@ -341,8 +350,8 @@ arn:aws:lambda:us-east-1:856699698935:layer:strands-agents-py3_12-x86_64:1
 **Goal:** Specialized agents working together
 
 **Steps:**
-1. Run `3-multi_agent_collaboration.ipynb` - Learn patterns
-2. Run `4-strands_with_agentcore.ipynb` - Deploy with Strands
+1. Run `3a Bedrock_Agents/3-multi_agent_collaboration.ipynb` - Learn patterns
+2. Run `3a Bedrock_Agents/4-strands_with_agentcore.ipynb` - Deploy with Strands
 3. Choose pattern: Agents as Tools, Swarm, Graph, or Workflow
 
 **Result:** Coordinated multi-agent system
@@ -352,7 +361,7 @@ arn:aws:lambda:us-east-1:856699698935:layer:strands-agents-py3_12-x86_64:1
 **Goal:** Complete serverless RAG app with authentication and UI
 
 **Steps:**
-1. Navigate to `S3VectorsApp/` folder
+1. Navigate to `2b S3VectorsApp/` folder
 2. Follow deployment guide in README
 3. Deploy with CDK: `cdk deploy`
 4. Get API key and test endpoints
@@ -365,14 +374,14 @@ arn:aws:lambda:us-east-1:856699698935:layer:strands-agents-py3_12-x86_64:1
 **Goal:** Master comprehensive RAG implementations and optimizations
 
 **Steps:**
-1. **Foundation**: `Demo1-Basic-RAG/` - Fully managed Bedrock KB
-2. **Cost Optimization**: `Demo2-S3-Vectors/` - 90% cost reduction
-3. **Search Enhancement**: `Demo3-Hybrid-Search/` - Vector + keyword fusion
-4. **Quality Improvement**: `Demo4-Reranking-Pipeline/` - Two-stage retrieval
-5. **Enterprise Scale**: `Demo5-Multi-Collection/` - Multi-index routing
-6. **Optimization**: `Demo-Chunking-Strategies/` - Document processing
-7. **Evaluation**: `Demo-RAGAS-Evaluation/` - Quality metrics
-8. **Model Selection**: `embedding_comparison_demo.ipynb` - Embedding comparison
+1. **Foundation**: `2a Bedrock RAG/Demo1-Basic-RAG/` - Fully managed Bedrock KB
+2. **Cost Optimization**: `2a Bedrock RAG/Demo2-S3-Vectors/` - 90% cost reduction
+3. **Search Enhancement**: `2a Bedrock RAG/Demo3-Hybrid-Search/` - Vector + keyword fusion
+4. **Quality Improvement**: `2a Bedrock RAG/Demo4-Reranking-Pipeline/` - Two-stage retrieval
+5. **Enterprise Scale**: `2a Bedrock RAG/Demo5-Multi-Collection/` - Multi-index routing
+6. **Optimization**: `2a Bedrock RAG/Demo-Chunking-Strategies/` - Document processing
+7. **Evaluation**: `2a Bedrock RAG/Demo-RAGAS-Evaluation/` - Quality metrics
+8. **Model Selection**: `2a Bedrock RAG/embedding_comparison_demo.ipynb` - Embedding comparison
 
 **Result:** Complete RAG expertise from basic to production-grade implementations
 
@@ -381,7 +390,7 @@ arn:aws:lambda:us-east-1:856699698935:layer:strands-agents-py3_12-x86_64:1
 **Goal:** Serverless image-to-video pipeline
 
 **Steps:**
-1. Run `async_pipeline_setup.ipynb` - Provision infrastructure
+1. Run `1b Async Pipeline/async_pipeline_setup.ipynb` - Provision infrastructure
 2. Test with API Gateway endpoints
 3. Monitor with CloudWatch
 
@@ -469,7 +478,7 @@ agentcore invoke '{"prompt": "Hello"}'
 
 **Test in UI:**
 1. Copy Agent ARN from deployment output
-2. Launch Streamlit UI: `cd UI && streamlit run app.py`
+2. Launch Streamlit UI: `cd Sample_UI_for && streamlit run app.py`
 3. Select "🤖 Equipment Agent" or "🔒 Secure Agent"
 4. Paste Agent ARN and start chatting
 
@@ -495,7 +504,7 @@ def handler(event, _context):
 
 Deploy with:
 ```bash
-cd Lambda
+cd "3d Lambda"
 ./deploy.sh
 ```
 
@@ -580,7 +589,7 @@ print(response['output']['text'])
 The included Streamlit UI provides an interactive way to explore all Bedrock capabilities:
 
 ```bash
-cd UI
+cd Sample_UI_for
 streamlit run app.py
 ```
 
@@ -589,8 +598,8 @@ streamlit run app.py
 | Demo | Description | Requirements |
 |------|-------------|--------------|
 | 💬 **Chat** | Conversation with models | None |
-| 📚 **RAG** | Knowledge Base queries | Run notebook 5 |
-| 🛡️ **Guardrails** | Content safety testing | Run notebook 7 |
+| 📚 **RAG** | Knowledge Base queries | Run notebook 5 in `3a Bedrock_Agents/` |
+| 🛡️ **Guardrails** | Content safety testing | Run notebook 7 in `3a Bedrock_Agents/` |
 | 🤖 **Equipment Agent** | Agent with KB integration | Deploy notebook 6 to AgentCore |
 | 🔒 **Secure Agent** | Agent with Guardrails + KB | Deploy notebook 8 to AgentCore |
 | 🎨 **Images** | Generate with Nova Canvas | None |
@@ -604,34 +613,11 @@ streamlit run app.py
 - **Real-time Blocking** - See guardrails in action
 - **Media Download** - Save generated images and videos
 
-### Screenshots
-
-**Chat Interface:**
-- Select model (Nova Lite, Nova Pro, Claude Sonnet)
-- Natural conversation with history
-- Token usage tracking
-
-**Knowledge Base RAG:**
-- Query equipment specifications
-- View source documents
-- See relevance scores
-
-**Guardrails Demo:**
-- Test safe and unsafe prompts
-- Real-time content filtering
-- Example test cases provided
-
-**Agent Demos:**
-- Equipment Agent: Chat with KB-enabled agent
-- Secure Agent: Agent with guardrails + KB
-- Requires AgentCore deployment (see notebooks 6 & 8)
-- Paste Agent ARN from deployment output
-
 ## 🚢 Deployment Options
 
 ### Interactive UI
 ```bash
-cd UI
+cd Sample_UI_for
 streamlit run app.py  # Runs on localhost:8501
 ```
 
@@ -648,23 +634,23 @@ agentcore deploy
 
 ### Lambda + Function URL
 ```bash
-cd Lambda
+cd "3d Lambda"
 ./deploy.sh
 # Returns public Function URL for testing
 ```
 
 ### Lambda + API Gateway
-Use notebooks in `Async Pipeline/` folder
+Use notebooks in `1b Async Pipeline/` folder
 
 ### Full Stack (Terraform)
 ```bash
-cd Application/terraform/01_storage_stack && terraform apply
+cd "3c Application/terraform/01_storage_stack" && terraform apply
 cd ../02_bedrock_rag_stack && terraform apply
 ```
 
 ### CDK (S3VectorsApp)
 ```bash
-cd S3VectorsApp
+cd "2b S3VectorsApp"
 cdk bootstrap && cdk deploy
 ```
 
@@ -749,8 +735,8 @@ By completing this repository, you will:
 
 **Ready to build?** 
 
-🎨 **Quick Demo:** `cd UI && streamlit run app.py`  
-📚 **Learn:** Start with `Basic Bedrock/1-bedrock_intro.ipynb`  
-🚀 **Deploy:** Follow guides in `Bedrock Agents/`  
-⚡ **Lambda:** Deploy a Strands agent in minutes with `cd Lambda && ./deploy.sh`  
-🏗️ **Full Stack:** Build the complete app with `cd Application && terraform apply`
+🎨 **Quick Demo:** `cd Sample_UI_for && streamlit run app.py`  
+📚 **Learn:** Start with `1a Basic Bedrock/1-bedrock_intro.ipynb`  
+🚀 **Deploy:** Follow guides in `3a Bedrock_Agents/`  
+⚡ **Lambda:** Deploy a Strands agent in minutes with `cd "3d Lambda" && ./deploy.sh`  
+🏗️ **Full Stack:** Build the complete app with `cd "3c Application" && terraform apply`

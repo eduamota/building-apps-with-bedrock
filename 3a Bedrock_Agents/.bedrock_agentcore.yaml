@@ -2,12 +2,12 @@ default_agent: strands_weather_agent
 agents:
   strands_weather_agent:
     name: strands_weather_agent
-    entrypoint: /Users/emota/Projects/building-apps-with-bedrock/Bedrock Agents/strands_weather_agent.py
+    entrypoint: /Users/emota/Projects/building-apps-with-bedrock/3a Bedrock_Agents/strands_weather_agent.py
     deployment_type: direct_code_deploy
     runtime_type: PYTHON_3_13
     platform: linux/arm64
     container_runtime: null
-    source_path: /Users/emota/Projects/building-apps-with-bedrock/Bedrock Agents
+    source_path: /Users/emota/Projects/building-apps-with-bedrock/3a Bedrock_Agents
     aws:
       execution_role: arn:aws:iam::058264544288:role/AmazonBedrockAgentCoreSDKRuntime-us-east-1-bea28dca66
       execution_role_auto_create: false
