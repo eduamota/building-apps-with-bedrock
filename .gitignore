@@ -185,3 +185,4 @@ env/
 aidlc-docs
 docs/
 generated-diagrams/
+node_modules/
