@@ -1,0 +1,10 @@
+__pycache__
+*.pyc
+.venv
+.gitignore
+.cdkignore
+proxy_handler.py
+proxy_requirements.txt
+tools_handler.py
+Dockerfile
+.dockerignore

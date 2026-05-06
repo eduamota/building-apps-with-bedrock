@@ -176,8 +176,12 @@ cython_debug/
 .DS_Store
 
 .terraform*
-
+.kiro
 # Virtual Environment
 .venv/
 venv/
 env/
+
+aidlc-docs
+docs/
+generated-diagrams/

@@ -1,0 +1,75 @@
+{
+ "Outputs": {
+  "ApiEndpoint": {
+   "Description": "API Gateway URL — set as NEXT_PUBLIC_API_URL for frontend",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Fn::ImportValue": "F1PitWall-Agent:ExportsOutputRefF1PitWallAPI7896A78895381851"
+      },
+      ".execute-api.us-west-2.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Fn::ImportValue": "F1PitWall-Agent:ExportsOutputRefF1PitWallAPIDeploymentStageprod1B3BD2A0D8BA8100"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "FrontendInstructions": {
+   "Value": "Run: cd frontend && NEXT_PUBLIC_API_URL=<ApiEndpoint> npm run dev"
+  }
+ },
+ "Resources": {
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zPSMzI10jNQTCwv1k1OydbNyUzSqw4uSUzO1nFOy/MvLSkoLanVCagsycjP0zfWMzTWMzRSzCrOzNQtKs0rycxN1QuC0AChMZwWSQAAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Frontend/CDKMetadata/Default"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

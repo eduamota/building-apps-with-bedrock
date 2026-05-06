@@ -1,0 +1,1338 @@
+{
+ "Resources": {
+  "F1PitWallRuntimeExecutionRoleD960A7A1": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "bedrock-agentcore.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Description": "Execution role for Bedrock Agent Core Runtime",
+    "MaxSessionDuration": 28800
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallRuntime/ExecutionRole/Resource"
+   }
+  },
+  "F1PitWallRuntimeExecutionRoleDefaultPolicy5F180498": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:DescribeLogStreams",
+        "logs:CreateLogGroup"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":logs:us-west-2:",
+          {
+           "Ref": "AWS::AccountId"
+          },
+          ":log-group:/aws/bedrock-agentcore/runtimes/*"
+         ]
+        ]
+       },
+       "Sid": "LogGroupAccess"
+      },
+      {
+       "Action": "logs:DescribeLogGroups",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":logs:us-west-2:",
+          {
+           "Ref": "AWS::AccountId"
+          },
+          ":log-group:*"
+         ]
+        ]
+       },
+       "Sid": "DescribeLogGroups"
+      },
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":logs:us-west-2:",
+          {
+           "Ref": "AWS::AccountId"
+          },
+          ":log-group:/aws/bedrock-agentcore/runtimes/*:log-stream:*"
+         ]
+        ]
+       },
+       "Sid": "LogStreamAccess"
+      },
+      {
+       "Action": [
+        "xray:PutTraceSegments",
+        "xray:PutTelemetryRecords",
+        "xray:GetSamplingRules",
+        "xray:GetSamplingTargets"
+       ],
+       "Effect": "Allow",
+       "Resource": "*",
+       "Sid": "XRayAccess"
+      },
+      {
+       "Action": "cloudwatch:PutMetricData",
+       "Condition": {
+        "StringEquals": {
+         "cloudwatch:namespace": "bedrock-agentcore"
+        }
+       },
+       "Effect": "Allow",
+       "Resource": "*",
+       "Sid": "CloudWatchMetrics"
+      },
+      {
+       "Action": [
+        "bedrock-agentcore:GetWorkloadAccessToken",
+        "bedrock-agentcore:GetWorkloadAccessTokenForJWT",
+        "bedrock-agentcore:GetWorkloadAccessTokenForUserId"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":bedrock-agentcore:us-west-2:",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":workload-identity-directory/default"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":bedrock-agentcore:us-west-2:",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":workload-identity-directory/default/workload-identity/*"
+          ]
+         ]
+        }
+       ],
+       "Sid": "GetAgentAccessToken"
+      },
+      {
+       "Action": [
+        "bedrock:InvokeModel",
+        "bedrock:InvokeModelWithResponseStream"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "bedrock-agentcore:CreateEvent",
+        "bedrock-agentcore:RetrieveMemoryRecords",
+        "bedrock-agentcore:ListMemoryRecords",
+        "bedrock-agentcore:GetMemoryRecord"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "F1PitWall-Infra:ExportsOutputFnGetAttF1KnowledgeBaseBucket41D2A84EArn4F12F09E"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "F1PitWall-Infra:ExportsOutputFnGetAttF1KnowledgeBaseBucket41D2A84EArn4F12F09E"
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:BatchGetImage"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":ecr:us-west-2:",
+          {
+           "Ref": "AWS::AccountId"
+          },
+          ":repository/",
+          {
+           "Fn::Sub": "cdk-hnb659fds-container-assets-${AWS::AccountId}-us-west-2"
+          }
+         ]
+        ]
+       }
+      },
+      {
+       "Action": "ecr:GetAuthorizationToken",
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "F1PitWallRuntimeExecutionRoleDefaultPolicy5F180498",
+    "Roles": [
+     {
+      "Ref": "F1PitWallRuntimeExecutionRoleD960A7A1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallRuntime/ExecutionRole/DefaultPolicy/Resource"
+   }
+  },
+  "F1PitWallRuntime7963324A": {
+   "Type": "AWS::BedrockAgentCore::Runtime",
+   "Properties": {
+    "AgentRuntimeArtifact": {
+     "ContainerConfiguration": {
+      "ContainerUri": {
+       "Fn::Sub": "${AWS::AccountId}.dkr.ecr.us-west-2.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-${AWS::AccountId}-us-west-2:d7ed8253a48ce8f26bbf3392c0262d27d5ad104adc4939e9c20d98fecb951243"
+      }
+     }
+    },
+    "AgentRuntimeName": "f1_pit_wall_v3",
+    "Description": "F1 Pit Wall multi-agent system",
+    "EnvironmentVariables": {
+     "MODEL_ID": "us.amazon.nova-pro-v1:0",
+     "KB_BUCKET": {
+      "Fn::ImportValue": "F1PitWall-Infra:ExportsOutputRefF1KnowledgeBaseBucket41D2A84E5799EC45"
+     },
+     "MEMORY_ID": "f1_pit_wall_memory"
+    },
+    "LifecycleConfiguration": {},
+    "NetworkConfiguration": {
+     "NetworkMode": "PUBLIC"
+    },
+    "ProtocolConfiguration": "HTTP",
+    "RoleArn": {
+     "Fn::GetAtt": [
+      "F1PitWallRuntimeExecutionRoleD960A7A1",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "F1PitWallRuntimeExecutionRoleDefaultPolicy5F180498",
+    "F1PitWallRuntimeExecutionRoleD960A7A1"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallRuntime/Resource"
+   }
+  },
+  "F1PitWallMemoryServiceRole39E4C886": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "bedrock-agentcore.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallMemory/ServiceRole/Resource"
+   }
+  },
+  "F1PitWallMemory92724DCF": {
+   "Type": "AWS::BedrockAgentCore::Memory",
+   "Properties": {
+    "Description": "Stores user preferences (favorite team/driver) and conversation history",
+    "EventExpiryDuration": 90,
+    "MemoryExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "F1PitWallMemoryServiceRole39E4C886",
+      "Arn"
+     ]
+    },
+    "MemoryStrategies": [
+     {
+      "UserPreferenceMemoryStrategy": {
+       "Description": "Capture individual preferences, interaction patterns, and personalized settings to enhance future experiences.",
+       "Name": "preference_builtin_cdkGen0001",
+       "Namespaces": [
+        "/strategies/{memoryStrategyId}/actors/{actorId}"
+       ],
+       "Type": "USER_PREFERENCE"
+      }
+     },
+     {
+      "SummaryMemoryStrategy": {
+       "Description": "Summarize interactions to preserve critical context and key insights",
+       "Name": "summary_builtin_cdkGen0001",
+       "Namespaces": [
+        "/strategies/{memoryStrategyId}/actors/{actorId}/sessions/{sessionId}"
+       ],
+       "Type": "SUMMARIZATION"
+      }
+     }
+    ],
+    "Name": "f1_pit_wall_memory"
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallMemory/Memory"
+   }
+  },
+  "F1PolicyEngineCE56605B": {
+   "Type": "AWS::BedrockAgentCore::PolicyEngine",
+   "Properties": {
+    "Description": "Read-only access enforcement for F1 knowledge base",
+    "Name": "f1_pit_wall_policy"
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PolicyEngine/Resource"
+   }
+  },
+  "F1PolicyEngineAllowReadOnly83EB7C50": {
+   "Type": "AWS::BedrockAgentCore::Policy",
+   "Properties": {
+    "Definition": {
+     "Cedar": {
+      "Statement": {
+       "Fn::Join": [
+        "",
+        [
+         "permit(\n  principal,\n  action,\n  resource == AgentCore::Gateway::\"",
+         {
+          "Fn::GetAtt": [
+           "F1PitWallGateway80E0DCB4",
+           "GatewayArn"
+          ]
+         },
+         "\"\n);"
+        ]
+       ]
+      }
+     }
+    },
+    "Description": "Allow all read-only F1 tool operations",
+    "Name": "F1PitWallAgentF1PoliyEngineAllowReadOnly7462CFB2",
+    "PolicyEngineId": {
+     "Fn::GetAtt": [
+      "F1PolicyEngineCE56605B",
+      "PolicyEngineId"
+     ]
+    },
+    "ValidationMode": "IGNORE_ALL_FINDINGS"
+   },
+   "DependsOn": [
+    "F1PolicyEngineCE56605B"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PolicyEngine/AllowReadOnly/Resource"
+   }
+  },
+  "F1PitWallGatewayServiceRoleB096E643": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "bedrock-agentcore.amazonaws.com"
+       }
+      },
+      {
+       "Action": "sts:AssumeRole",
+       "Condition": {
+        "StringEquals": {
+         "aws:SourceAccount": {
+          "Ref": "AWS::AccountId"
+         }
+        },
+        "ArnLike": {
+         "aws:SourceArn": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":bedrock-agentcore:us-west-2:",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":gateway/f1-pit-wall-gateway*"
+           ]
+          ]
+         }
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "bedrock-agentcore.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Description": "Service role for Bedrock AgentCore Gateway f1-pit-wall-gateway"
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallGateway/ServiceRole/Resource"
+   }
+  },
+  "F1PitWallGatewayServiceRoleDefaultPolicy7BF9D191": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "bedrock-agentcore:GetPolicyEngine",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "F1PolicyEngineCE56605B",
+         "PolicyEngineArn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "bedrock-agentcore:AuthorizeAction",
+        "bedrock-agentcore:PartiallyAuthorizeActions"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "F1PolicyEngineCE56605B",
+          "PolicyEngineArn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":bedrock-agentcore:us-west-2:",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":gateway/f1-pit-wall-gateway-*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "lambda:InvokeFunction",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "F1ToolsFunctionD3D4ABB0",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "F1ToolsFunctionD3D4ABB0",
+             "Arn"
+            ]
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "F1PitWallGatewayServiceRoleDefaultPolicy7BF9D191",
+    "Roles": [
+     {
+      "Ref": "F1PitWallGatewayServiceRoleB096E643"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallGateway/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "F1PitWallGateway80E0DCB4": {
+   "Type": "AWS::BedrockAgentCore::Gateway",
+   "Properties": {
+    "AuthorizerType": "NONE",
+    "Description": "Tool gateway for F1 agent tools",
+    "Name": "f1-pit-wall-gateway",
+    "PolicyEngineConfiguration": {
+     "Arn": {
+      "Fn::GetAtt": [
+       "F1PolicyEngineCE56605B",
+       "PolicyEngineArn"
+      ]
+     },
+     "Mode": "LOG_ONLY"
+    },
+    "ProtocolConfiguration": {
+     "Mcp": {
+      "Instructions": "F1 Pit Wall tools: standings, predictions, lap times, calendar",
+      "SearchType": "SEMANTIC",
+      "SupportedVersions": [
+       "2025-03-26"
+      ]
+     }
+    },
+    "ProtocolType": "MCP",
+    "RoleArn": {
+     "Fn::GetAtt": [
+      "F1PitWallGatewayServiceRoleB096E643",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "F1PitWallGatewayServiceRoleDefaultPolicy7BF9D191",
+    "F1PitWallGatewayServiceRoleB096E643"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallGateway/Resource"
+   }
+  },
+  "F1PitWallGatewayF1ToolsD3D7DD92": {
+   "Type": "AWS::BedrockAgentCore::GatewayTarget",
+   "Properties": {
+    "CredentialProviderConfigurations": [
+     {
+      "CredentialProviderType": "GATEWAY_IAM_ROLE"
+     }
+    ],
+    "Description": "F1 data tools: standings, predictions, lap times, calendar",
+    "GatewayIdentifier": {
+     "Fn::GetAtt": [
+      "F1PitWallGateway80E0DCB4",
+      "GatewayIdentifier"
+     ]
+    },
+    "Name": "f1-tools",
+    "TargetConfiguration": {
+     "Mcp": {
+      "Lambda": {
+       "LambdaArn": {
+        "Fn::GetAtt": [
+         "F1ToolsFunctionD3D4ABB0",
+         "Arn"
+        ]
+       },
+       "ToolSchema": {
+        "InlinePayload": [
+         {
+          "Description": "Get current F1 championship standings",
+          "InputSchema": {
+           "Properties": {
+            "category": {
+             "Description": "drivers or constructors",
+             "Type": "string"
+            }
+           },
+           "Required": [
+            "category"
+           ],
+           "Type": "object"
+          },
+          "Name": "get_standings"
+         },
+         {
+          "Description": "Predict race outcome for a track",
+          "InputSchema": {
+           "Properties": {
+            "track": {
+             "Description": "Track name",
+             "Type": "string"
+            }
+           },
+           "Required": [
+            "track"
+           ],
+           "Type": "object"
+          },
+          "Name": "predict_race"
+         },
+         {
+          "Description": "Compare lap times between two drivers",
+          "InputSchema": {
+           "Properties": {
+            "driver1": {
+             "Description": "First driver",
+             "Type": "string"
+            },
+            "driver2": {
+             "Description": "Second driver",
+             "Type": "string"
+            },
+            "track": {
+             "Description": "Track name",
+             "Type": "string"
+            }
+           },
+           "Required": [
+            "driver1",
+            "driver2",
+            "track"
+           ],
+           "Type": "object"
+          },
+          "Name": "compare_lap_times"
+         },
+         {
+          "Description": "Get upcoming F1 races",
+          "InputSchema": {
+           "Properties": {
+            "next_n": {
+             "Description": "Number of races",
+             "Type": "string"
+            }
+           },
+           "Required": [],
+           "Type": "object"
+          },
+          "Name": "get_calendar"
+         }
+        ]
+       }
+      }
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallGateway/F1Tools/Resource"
+   }
+  },
+  "F1ToolsFunctionServiceRole03355E49": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1ToolsFunction/ServiceRole/Resource"
+   }
+  },
+  "F1ToolsFunctionD3D4ABB0": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
+     },
+     "S3Key": "868e5467c226193d3efccbff7569ff7d6ed01c281d9e4a08088fe6ae090128da.zip"
+    },
+    "Handler": "tools_handler.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "F1ToolsFunctionServiceRole03355E49",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.12",
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "F1ToolsFunctionServiceRole03355E49"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1ToolsFunction/Resource",
+    "aws:asset:path": "asset.868e5467c226193d3efccbff7569ff7d6ed01c281d9e4a08088fe6ae090128da",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "F1PitWallAPI7896A788": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Name": "F1 Pit Wall API"
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallAPI/Resource"
+   }
+  },
+  "F1PitWallAPICloudWatchRole4B67865E": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+       ]
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallAPI/CloudWatchRole/Resource"
+   }
+  },
+  "F1PitWallAPIAccount8F57E9E3": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "F1PitWallAPICloudWatchRole4B67865E",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "F1PitWallAPI7896A788"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallAPI/Account"
+   }
+  },
+  "F1PitWallAPIDeployment89CA651158bd8de4bc64886e12d5bdd48f6d974c": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Automatically created by the RestApi construct",
+    "RestApiId": {
+     "Ref": "F1PitWallAPI7896A788"
+    }
+   },
+   "DependsOn": [
+    "F1PitWallAPIchatOPTIONS1FB23B33",
+    "F1PitWallAPIchatPOST0458C3F7",
+    "F1PitWallAPIchatEA44697B",
+    "F1PitWallAPIOPTIONS545CBA07"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallAPI/Deployment/Resource",
+    "aws:cdk:do-not-refactor": true
+   }
+  },
+  "F1PitWallAPIDeploymentStageprod1B3BD2A0": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "F1PitWallAPIDeployment89CA651158bd8de4bc64886e12d5bdd48f6d974c"
+    },
+    "RestApiId": {
+     "Ref": "F1PitWallAPI7896A788"
+    },
+    "StageName": "prod"
+   },
+   "DependsOn": [
+    "F1PitWallAPIAccount8F57E9E3"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallAPI/DeploymentStage.prod/Resource"
+   }
+  },
+  "F1PitWallAPIOPTIONS545CBA07": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "F1PitWallAPI7896A788",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "F1PitWallAPI7896A788"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallAPI/Default/OPTIONS/Resource"
+   }
+  },
+  "F1PitWallAPIchatEA44697B": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "F1PitWallAPI7896A788",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "chat",
+    "RestApiId": {
+     "Ref": "F1PitWallAPI7896A788"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallAPI/Default/chat/Resource"
+   }
+  },
+  "F1PitWallAPIchatOPTIONS1FB23B33": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "F1PitWallAPIchatEA44697B"
+    },
+    "RestApiId": {
+     "Ref": "F1PitWallAPI7896A788"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallAPI/Default/chat/OPTIONS/Resource"
+   }
+  },
+  "F1PitWallAPIchatPOSTApiPermissionF1PitWallAgentF1PitWallAPIBAA5D57CPOSTchat2E277787": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "F1ProxyFunctionCA478510",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-west-2:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "F1PitWallAPI7896A788"
+       },
+       "/",
+       {
+        "Ref": "F1PitWallAPIDeploymentStageprod1B3BD2A0"
+       },
+       "/POST/chat"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallAPI/Default/chat/POST/ApiPermission.F1PitWallAgentF1PitWallAPIBAA5D57C.POST..chat"
+   }
+  },
+  "F1PitWallAPIchatPOSTApiPermissionTestF1PitWallAgentF1PitWallAPIBAA5D57CPOSTchatB65CD387": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "F1ProxyFunctionCA478510",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-west-2:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "F1PitWallAPI7896A788"
+       },
+       "/test-invoke-stage/POST/chat"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallAPI/Default/chat/POST/ApiPermission.Test.F1PitWallAgentF1PitWallAPIBAA5D57C.POST..chat"
+   }
+  },
+  "F1PitWallAPIchatPOST0458C3F7": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "F1ProxyFunctionCA478510",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "F1PitWallAPIchatEA44697B"
+    },
+    "RestApiId": {
+     "Ref": "F1PitWallAPI7896A788"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1PitWallAPI/Default/chat/POST/Resource"
+   }
+  },
+  "F1ProxyFunctionServiceRole06B8EA4E": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1ProxyFunction/ServiceRole/Resource"
+   }
+  },
+  "F1ProxyFunctionServiceRoleDefaultPolicy0A4B2408": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "bedrock-agentcore:InvokeAgentRuntime",
+        "bedrock-agentcore:InvokeAgentRuntimeForUser"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "F1PitWallRuntime7963324A",
+          "AgentRuntimeArn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "F1PitWallRuntime7963324A",
+             "AgentRuntimeArn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "F1ProxyFunctionServiceRoleDefaultPolicy0A4B2408",
+    "Roles": [
+     {
+      "Ref": "F1ProxyFunctionServiceRole06B8EA4E"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1ProxyFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "F1ProxyFunctionCA478510": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
+     },
+     "S3Key": "bf53fd7c312f3eb9179771e9b9c6a4c10924f3fc6c69d9d76b2dcdd76034ac9f.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "AGENTCORE_RUNTIME_ID": {
+       "Fn::GetAtt": [
+        "F1PitWallRuntime7963324A",
+        "AgentRuntimeId"
+       ]
+      },
+      "ACCOUNT_ID": {
+       "Ref": "AWS::AccountId"
+      }
+     }
+    },
+    "Handler": "proxy_handler.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "F1ProxyFunctionServiceRole06B8EA4E",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.12",
+    "Timeout": 120
+   },
+   "DependsOn": [
+    "F1ProxyFunctionServiceRoleDefaultPolicy0A4B2408",
+    "F1ProxyFunctionServiceRole06B8EA4E"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/F1ProxyFunction/Resource",
+    "aws:asset:path": "asset.bf53fd7c312f3eb9179771e9b9c6a4c10924f3fc6c69d9d76b2dcdd76034ac9f",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WRwW7CMAyGn4V7GqDV7oON7YSGYHdkUq/N2iZV4gihKO8+JQ2jnPw7sf/YX0pevpTcrxZwtYWou6KXF+5PBKJjcLVnL2Hg/qh7ZG8/KsWD7qW4xXRSgV2wNlp00KAioQ1yH2udIjmktj0O2sw6dqqRCh95VJ9AeIW5/AbTIAXWw3CpgfsPpwRJrWLJXB/QDNJaqVVgtjqDtUiWb2JgtuJbJzqkLVhkMMpm8ub+iJY2o0xbPeRGCO0UsXcce30bUFE8nWUngiZNPokjWu2MwGS/R2p1PS2c1P02P5J0CCyNFvulauLVl6PRUWCrAvqxBb5avObfWMaY6Rb/eHOZvxPOeJ/YZrB3qs9IAzvcqNVqWfF1xdfl4tdKWZjJjmfbPwe6BbYaAgAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "F1PitWall-Agent/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "F1PitWallAPIEndpoint41C115DF": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "F1PitWallAPI7896A788"
+      },
+      ".execute-api.us-west-2.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "F1PitWallAPIDeploymentStageprod1B3BD2A0"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "ApiUrl": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "F1PitWallAPI7896A788"
+      },
+      ".execute-api.us-west-2.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "F1PitWallAPIDeploymentStageprod1B3BD2A0"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "RuntimeId": {
+   "Value": {
+    "Fn::GetAtt": [
+     "F1PitWallRuntime7963324A",
+     "AgentRuntimeId"
+    ]
+   }
+  },
+  "GatewayId": {
+   "Value": {
+    "Fn::GetAtt": [
+     "F1PitWallGateway80E0DCB4",
+     "GatewayIdentifier"
+    ]
+   }
+  },
+  "MemoryId": {
+   "Value": {
+    "Fn::GetAtt": [
+     "F1PitWallMemory92724DCF",
+     "MemoryId"
+    ]
+   }
+  },
+  "PolicyEngineId": {
+   "Value": {
+    "Fn::GetAtt": [
+     "F1PolicyEngineCE56605B",
+     "PolicyEngineId"
+    ]
+   }
+  },
+  "ExportsOutputRefF1PitWallAPI7896A78895381851": {
+   "Value": {
+    "Ref": "F1PitWallAPI7896A788"
+   },
+   "Export": {
+    "Name": "F1PitWall-Agent:ExportsOutputRefF1PitWallAPI7896A78895381851"
+   }
+  },
+  "ExportsOutputRefF1PitWallAPIDeploymentStageprod1B3BD2A0D8BA8100": {
+   "Value": {
+    "Ref": "F1PitWallAPIDeploymentStageprod1B3BD2A0"
+   },
+   "Export": {
+    "Name": "F1PitWall-Agent:ExportsOutputRefF1PitWallAPIDeploymentStageprod1B3BD2A0D8BA8100"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

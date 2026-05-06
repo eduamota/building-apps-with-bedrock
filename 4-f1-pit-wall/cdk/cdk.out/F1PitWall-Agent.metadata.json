@@ -1,0 +1,772 @@
+{
+  "/F1PitWall-Agent": [
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallRuntime": [
+    {
+      "type": "aws:cdk:info",
+      "data": "Container URI validation skipped as it contains unresolved CDK tokens. The URI will be validated at deployment time.",
+      "trace": [
+        "Annotations.addMessage (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/annotations.js:1:2399)",
+        "Annotations.addInfo (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/annotations.js:1:1546)",
+        "WrappedClass.validateContainerUri (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/@aws-cdk/aws-bedrock-agentcore-alpha/lib/runtime/runtime.js:616:52)",
+        "WrappedClass.renderAgentRuntimeArtifact (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/@aws-cdk/aws-bedrock-agentcore-alpha/lib/runtime/runtime.js:402:26)",
+        "Object.produce (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/@aws-cdk/aws-bedrock-agentcore-alpha/lib/runtime/runtime.js:271:41)",
+        "LazyAny.resolve (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/lazy.js:1:3833)",
+        "LazyAny.resolve (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/lazy.js:1:4520)",
+        "RememberingTokenResolver.resolveToken (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/resolvable.js:1:1646)",
+        "RememberingTokenResolver.resolveToken (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:6094)",
+        "resolve (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:3392)",
+        "Object.resolve (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:1499)",
+        "resolve (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:3754)",
+        "Object.resolve (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:1499)",
+        "RememberingTokenResolver.resolveToken (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/resolvable.js:1:1687)",
+        "RememberingTokenResolver.resolveToken (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:6094)",
+        "resolve (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:3392)",
+        "Object.resolve (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:1499)",
+        "resolve (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:3754)",
+        "Object.resolve (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:1499)",
+        "RememberingTokenResolver.resolveToken (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/resolvable.js:1:1687)",
+        "RememberingTokenResolver.resolveToken (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:6094)",
+        "resolve (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:3392)",
+        "Object.resolve (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:1499)",
+        "resolve (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:3754)",
+        "Object.resolve (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:1499)",
+        "resolve (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:3754)",
+        "findTokens (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:4648)",
+        "findAllReferences (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/refs.js:1:5326)",
+        "resolveReferences (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/refs.js:1:1761)",
+        "prepareApp (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/prepare-app.js:1:1514)",
+        "synthesize (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/private/synthesis.js:1:2092)",
+        "App.synth (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/stage.js:1:3421)",
+        "/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:54345",
+        "Kernel._Kernel_ensureSync (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:69992)",
+        "Kernel.invoke (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:54294)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "process.processImmediate (node:internal/timers:508:21)"
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallGateway": [
+    {
+      "type": "aws:cdk:warning",
+      "data": "This gateway has no inbound authorization. The endpoint will be publicly accessible without credentials. Ensure you have implemented compensating security controls such as Gateway Interceptors. See https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway-inbound-auth.html#gateway-inbound-auth-none [ack: @aws-cdk/aws-bedrock-agentcore-alpha:noAuthGateway]",
+      "trace": [
+        "Annotations.addMessage (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/annotations.js:1:2399)",
+        "Annotations.addWarningV2 (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/annotations.js:1:1087)",
+        "new Gateway (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/@aws-cdk/aws-bedrock-agentcore-alpha/lib/gateway/gateway.js:325:45)",
+        "new Gateway (/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/jsii-kernel-Eftpsn/node_modules/aws-cdk-lib/core/lib/prop-injectable.js:1:855)",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "process.processImmediate (node:internal/timers:508:21)"
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/ApiUrl": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ApiUrl"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/RuntimeId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "RuntimeId"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/GatewayId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GatewayId"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/MemoryId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MemoryId"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/PolicyEngineId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "PolicyEngineId"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...App.synth in aws-cdk-lib...",
+        "/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:543 (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:5434)",
+        "Kernel._Kernel_ensureSync (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:69992)",
+        "Kernel.invoke (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:54294)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...App.synth in aws-cdk-lib...",
+        "/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:543 (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:5434)",
+        "Kernel._Kernel_ensureSync (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:69992)",
+        "Kernel.invoke (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:54294)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallRuntime/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallRuntime7963324A"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-cdk/aws-bedrock-agentcore-alpha, new Runtime in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallMemory/Memory": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallMemory92724DCF"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-cdk/aws-bedrock-agentcore-alpha, new Memory in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PolicyEngine/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PolicyEngineCE56605B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-cdk/aws-bedrock-agentcore-alpha, new PolicyEngine in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallGateway/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallGateway80E0DCB4"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-cdk/aws-bedrock-agentcore-alpha, new Gateway in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1ToolsFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1ToolsFunctionD3D4ABB0"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallAPI/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallAPI7896A788"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallAPI/Account": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallAPIAccount8F57E9E3"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallAPI/Endpoint": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallAPIEndpoint41C115DF"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1ProxyFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1ProxyFunctionCA478510"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...App.synth in aws-cdk-lib...",
+        "/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:543 (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:5434)",
+        "Kernel._Kernel_ensureSync (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:69992)",
+        "Kernel.invoke (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:54294)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/Exports/Output{\"Ref\":\"F1PitWallAPI7896A788\"}": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ExportsOutputRefF1PitWallAPI7896A78895381851"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...App.synth in aws-cdk-lib...",
+        "/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:543 (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:5434)",
+        "Kernel._Kernel_ensureSync (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:69992)",
+        "Kernel.invoke (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:54294)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/Exports/Output{\"Ref\":\"F1PitWallAPIDeploymentStageprod1B3BD2A0\"}": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ExportsOutputRefF1PitWallAPIDeploymentStageprod1B3BD2A0D8BA8100"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...App.synth in aws-cdk-lib...",
+        "/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:543 (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:5434)",
+        "Kernel._Kernel_ensureSync (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:69992)",
+        "Kernel.invoke (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:54294)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallRuntime/ExecutionRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallRuntimeExecutionRoleD960A7A1"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-cdk/aws-bedrock-agentcore-alpha, new Runtime in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallMemory/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallMemoryServiceRole39E4C886"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-cdk/aws-bedrock-agentcore-alpha, new Memory in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PolicyEngine/AllowReadOnly/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PolicyEngineAllowReadOnly83EB7C50"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-cdk/aws-bedrock-agentcore-alpha, aws-cdk-lib, @aws-cdk/aws-bedrock-agentcore-alpha, WrappedClass.<anonymous> in aws-cdk-lib...",
+        "/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:543 (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:5434)",
+        "Kernel._Kernel_ensureSync (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:69992)",
+        "Kernel.invoke (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:54294)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallGateway/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallGatewayServiceRoleB096E643"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-cdk/aws-bedrock-agentcore-alpha, new Gateway in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallGateway/F1Tools/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallGatewayF1ToolsD3D7DD92"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...@aws-cdk/aws-bedrock-agentcore-alpha, aws-cdk-lib, @aws-cdk/aws-bedrock-agentcore-alpha, WrappedClass.<anonymous> in aws-cdk-lib...",
+        "/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:543 (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:5434)",
+        "Kernel._Kernel_ensureSync (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:69992)",
+        "Kernel.invoke (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:54294)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1ToolsFunction/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1ToolsFunctionServiceRole03355E49"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallAPI/CloudWatchRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallAPICloudWatchRole4B67865E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallAPI/Deployment/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallAPIDeployment89CA651158bd8de4bc64886e12d5bdd48f6d974c"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallAPI/DeploymentStage.prod/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallAPIDeploymentStageprod1B3BD2A0"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1ProxyFunction/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1ProxyFunctionServiceRole06B8EA4E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallRuntime/ExecutionRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallRuntimeExecutionRoleDefaultPolicy5F180498"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-cdk/aws-bedrock-agentcore-alpha, new Runtime in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallGateway/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallGatewayServiceRoleDefaultPolicy7BF9D191"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, @aws-cdk/aws-bedrock-agentcore-alpha, new Gateway in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallAPI/Default/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallAPIOPTIONS545CBA07"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallAPI/Default/chat/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallAPIchatEA44697B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:543 (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:5434)",
+        "Kernel._Kernel_ensureSync (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:69992)",
+        "Kernel.invoke (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:54294)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1ProxyFunction/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1ProxyFunctionServiceRoleDefaultPolicy0A4B2408"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, WrappedClass.grantInvoke in @aws-cdk/aws-bedrock-agentcore-alpha...",
+        "/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:543 (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:5434)",
+        "Kernel._Kernel_ensureSync (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:69992)",
+        "Kernel.invoke (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:54294)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallAPI/Default/chat/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallAPIchatOPTIONS1FB23B33"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:543 (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:5434)",
+        "Kernel._Kernel_ensureSync (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:69992)",
+        "Kernel.invoke (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:54294)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallAPI/Default/chat/POST/ApiPermission.F1PitWallAgentF1PitWallAPIBAA5D57C.POST..chat": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallAPIchatPOSTApiPermissionF1PitWallAgentF1PitWallAPIBAA5D57CPOSTchat2E277787"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:543 (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:5434)",
+        "Kernel._Kernel_ensureSync (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:69992)",
+        "Kernel.invoke (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:54294)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallAPI/Default/chat/POST/ApiPermission.Test.F1PitWallAgentF1PitWallAPIBAA5D57C.POST..chat": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallAPIchatPOSTApiPermissionTestF1PitWallAgentF1PitWallAPIBAA5D57CPOSTchatB65CD387"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:543 (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:5434)",
+        "Kernel._Kernel_ensureSync (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:69992)",
+        "Kernel.invoke (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:54294)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Agent/F1PitWallAPI/Default/chat/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "F1PitWallAPIchatPOST0458C3F7"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:543 (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:5434)",
+        "Kernel._Kernel_ensureSync (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:69992)",
+        "Kernel.invoke (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:54294)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ]
+}

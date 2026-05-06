@@ -1,0 +1,106 @@
+{
+  "/F1PitWall-Frontend": [
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Frontend/ApiEndpoint": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ApiEndpoint"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Frontend/FrontendInstructions": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "FrontendInstructions"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "Kernel._Kernel_create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:61273)",
+        "Kernel.create (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:52004)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Frontend/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...App.synth in aws-cdk-lib...",
+        "/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:543 (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:5434)",
+        "Kernel._Kernel_ensureSync (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:69992)",
+        "Kernel.invoke (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:54294)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Frontend/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...App.synth in aws-cdk-lib...",
+        "/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:543 (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:5434)",
+        "Kernel._Kernel_ensureSync (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:69992)",
+        "Kernel.invoke (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:54294)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/F1PitWall-Frontend/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...App.synth in aws-cdk-lib...",
+        "/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:543 (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:5434)",
+        "Kernel._Kernel_ensureSync (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:69992)",
+        "Kernel.invoke (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:54294)",
+        "KernelHost.processRequest (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:212888)",
+        "KernelHost.run (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211943)",
+        "Immediate._onImmediate (/private/var/folders/jn/py_6v4j90519z5d9j8hh442r0000gn/T/tmpw8556y43/lib/program.js:1:211987)",
+        "...node internals..."
+      ]
+    }
+  ]
+}

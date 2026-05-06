@@ -1,0 +1,54 @@
+"""Proxy Lambda — invokes AgentCore Runtime via boto3."""
+
+import json
+import os
+import re
+import boto3
+
+RUNTIME_ID = os.environ["AGENTCORE_RUNTIME_ID"]
+REGION = os.environ.get("AWS_REGION", "us-west-2")
+
+client = boto3.client("bedrock-agentcore", region_name=REGION)
+
+CORS_HEADERS = {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+}
+
+
+def handler(event, context):
+    if event.get("httpMethod") == "OPTIONS":
+        return {"statusCode": 200, "headers": CORS_HEADERS, "body": ""}
+
+    body = json.loads(event.get("body", "{}"))
+    message = body.get("message", "")
+    session_id = body.get("session_id", "default")
+
+    if not message:
+        return {"statusCode": 400, "headers": CORS_HEADERS, "body": json.dumps({"error": "message required"})}
+
+    try:
+        response = client.invoke_agent_runtime(
+            agentRuntimeId=RUNTIME_ID,
+            agentRuntimeEndpointId="DEFAULT",
+            sessionId=session_id,
+            payload=json.dumps({"prompt": message}),
+        )
+        result = json.loads(response["body"].read())
+        text = result.get("response", result.get("result", str(result)))
+
+        if isinstance(text, dict):
+            content = text.get("content", [])
+            text = "".join(block.get("text", "") for block in content if isinstance(block, dict))
+
+        text = re.sub(r"<thinking>.*?</thinking>\s*", "", str(text), flags=re.DOTALL).strip()
+    except Exception as e:
+        text = f"Error invoking AgentCore Runtime: {str(e)}"
+
+    return {
+        "statusCode": 200,
+        "headers": CORS_HEADERS,
+        "body": json.dumps({"response": text, "session_id": session_id}),
+    }

@@ -1,0 +1,21 @@
+{
+  "version": "53.0.0",
+  "files": {
+    "4ecec72494edb52d037a547a0a3697c62947b3acbbf42354e4766dbc3386468e": {
+      "displayName": "F1PitWall-Frontend Template",
+      "source": {
+        "path": "F1PitWall-Frontend.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-us-west-2-0af5b20b": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2",
+          "objectKey": "4ecec72494edb52d037a547a0a3697c62947b3acbbf42354e4766dbc3386468e.json",
+          "region": "us-west-2",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-west-2"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
