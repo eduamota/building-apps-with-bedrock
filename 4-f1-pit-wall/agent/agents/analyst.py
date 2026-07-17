@@ -19,11 +19,10 @@ Present data clearly with numbers and context.
 Speak like a data scientist — precise, factual, analytical.
 """
 
-
 def create_analyst_agent() -> Agent:
     model = BedrockModel(model_id=MODEL_ID, region_name=REGION)
     return Agent(
         model=model,
         system_prompt=SYSTEM_PROMPT,
-        tools=[get_standings, compare_lap_times],
+        tools=[get_standings, compare_lap_times, get_skills],
     )
