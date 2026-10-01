@@ -1,0 +1,5 @@
+{
+  "research-tool": "arn:aws:lambda:us-west-2:058264544288:function:orgintel-research-tool",
+  "document-tool": "arn:aws:lambda:us-west-2:058264544288:function:orgintel-document-tool",
+  "strategy-tool": "arn:aws:lambda:us-west-2:058264544288:function:orgintel-strategy-tool"
+}

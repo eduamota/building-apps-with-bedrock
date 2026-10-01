@@ -1,0 +1,23 @@
+# Dependencies for the "1a Basic Bedrock" notebooks
+# Install with: pip install -r requirements.txt
+
+# AWS SDK for Python — Bedrock control plane, runtime, converse, and
+# inference-profile APIs (list/get/create inference profiles).
+# 1.34.x+ is required for the Converse API and async invoke; a recent
+# release is recommended so newer model IDs resolve.
+boto3>=1.40.0
+
+# Image creation and manipulation used in 2-image_generation.ipynb and
+# 3-video_generation.ipynb (Image, ImageDraw, BytesIO round-trips).
+Pillow>=10.4.0
+
+# Comparison / decision-guide tables in 4-inference_profiles.ipynb.
+pandas>=2.2.0
+
+# display() for rendering generated images inline in the notebooks.
+ipython>=8.18.0
+
+# Jupyter runtime to execute the .ipynb files.
+jupyter>=1.1.0
+notebook>=7.2.0
+ipykernel>=6.29.0

@@ -1,0 +1,19 @@
+# Dependencies for the 1c Org Research Agent (AgentCore Harness) demo
+# Install with: pip install -r requirements.txt
+
+# AWS SDK. The AgentCore Harness APIs (bedrock-agentcore-control create_harness/get_harness
+# and bedrock-agentcore invoke_harness) require a recent SDK; 1.43.x+ includes them.
+boto3>=1.43.0
+botocore>=1.43.0
+
+# Notebook runtime + inline Markdown rendering of the generated summary.
+jupyter>=1.1.0
+notebook>=7.2.0
+ipykernel>=6.29.0
+ipython>=8.18.0
+
+# NOTE: the scripts (setup_research_agent.py, research_org.py) need only boto3 — the Jupyter
+# packages above are required solely to run research_agent_demo.ipynb.
+#
+# The optional AgentCore CLI path (not required by these scripts) is a separate npm install:
+#   npm install -g @aws/agentcore

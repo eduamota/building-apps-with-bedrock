@@ -1,0 +1,5 @@
+# Runtime artifacts — not source
+.harness_arn
+summaries/
+__pycache__/
+*.pyc
