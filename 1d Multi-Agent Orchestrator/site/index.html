@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OrgIntel — Multi-Agent Org Research</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  :root { --bg:#0f172a; --panel:#1e293b; --accent:#38bdf8; --text:#e2e8f0; --muted:#94a3b8; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+         background: var(--bg); color: var(--text); }
+  header { padding: 20px 24px; border-bottom: 1px solid #334155; }
+  header h1 { margin: 0; font-size: 20px; }
+  header p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 24px; }
+  .composer { display:flex; gap:10px; margin-bottom: 20px; }
+  .composer input { flex:1; padding: 12px 14px; border-radius: 8px; border:1px solid #334155;
+                    background: var(--panel); color: var(--text); font-size: 15px; }
+  .composer button { padding: 12px 20px; border:0; border-radius: 8px; background: var(--accent);
+                     color:#082f49; font-weight:600; cursor:pointer; font-size: 15px; }
+  .composer button:disabled { opacity:.5; cursor:not-allowed; }
+  .status { color: var(--muted); font-size: 13px; margin-bottom: 16px; min-height: 18px; }
+  .msg { background: var(--panel); border:1px solid #334155; border-radius: 10px;
+         padding: 18px 22px; margin-bottom: 16px; }
+  .msg.user { background:#0b2540; }
+  .msg h1 { font-size: 22px; border-bottom:1px solid #334155; padding-bottom:6px; }
+  .msg h2 { font-size: 17px; color: var(--accent); }
+  .msg table { border-collapse: collapse; width:100%; margin: 10px 0; }
+  .msg th, .msg td { border:1px solid #334155; padding:6px 10px; text-align:left; font-size:14px; }
+  .msg code { background:#0b1220; padding:2px 5px; border-radius:4px; }
+  .msg a { color: var(--accent); }
+  .spinner { display:inline-block; width:14px; height:14px; border:2px solid #334155;
+             border-top-color: var(--accent); border-radius:50%; animation: spin 1s linear infinite;
+             vertical-align: middle; margin-right: 6px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .hint { color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🧭 OrgIntel</h1>
+  <p>Multi-agent organization intelligence — research → strategy → briefing document, via Amazon Bedrock AgentCore.</p>
+</header>
+<div class="wrap">
+  <div class="composer">
+    <input id="apikey" type="password" placeholder="API key (x-api-key)" autocomplete="off"
+           style="max-width:220px;" />
+    <input id="org" type="text" placeholder="Enter an organization (e.g. Anthropic) or ask what I can do…"
+           autocomplete="off" />
+    <button id="send">Research</button>
+  </div>
+  <div class="status" id="status"></div>
+  <div id="messages">
+    <div class="msg">
+      <p class="hint">Ask me to research an organization. I'll coordinate three specialist agents and
+      return a Research summary, a Strategy brief, and a polished Briefing Document. A full run can
+      take a few minutes (the research agent browses the web).</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // The deploy script injects the API endpoint here.
+  const API_ENDPOINT = "__API_ENDPOINT__";
+
+  const $ = (id) => document.getElementById(id);
+  const statusEl = $("status");
+  const messagesEl = $("messages");
+  const inputEl = $("org");
+  const sendEl = $("send");
+  const keyEl = $("apikey");
+
+  // Persist the API key locally so it isn't baked into the page or re-typed each visit.
+  keyEl.value = localStorage.getItem("orgintel_api_key") || "";
+  keyEl.addEventListener("change", () => localStorage.setItem("orgintel_api_key", keyEl.value.trim()));
+
+  function authHeaders(extra) {
+    const h = Object.assign({}, extra || {});
+    const k = keyEl.value.trim();
+    if (k) h["x-api-key"] = k;
+    return h;
+  }
+
+  function addMessage(markdown, cls) {
+    const div = document.createElement("div");
+    div.className = "msg" + (cls ? " " + cls : "");
+    div.innerHTML = cls === "user" ? escapeHtml(markdown) : marked.parse(markdown);
+    messagesEl.appendChild(div);
+    div.scrollIntoView({ behavior: "smooth", block: "start" });
+    return div;
+  }
+  function escapeHtml(s){return s.replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+  async function run() {
+    const message = inputEl.value.trim();
+    if (!message) return;
+    if (!keyEl.value.trim()) { statusEl.textContent = "Enter your API key first."; keyEl.focus(); return; }
+    localStorage.setItem("orgintel_api_key", keyEl.value.trim());
+    sendEl.disabled = true; inputEl.disabled = true;
+    addMessage(message, "user");
+    inputEl.value = "";
+    statusEl.innerHTML = '<span class="spinner"></span> Starting job…';
+
+    try {
+      const start = await fetch(API_ENDPOINT + "/chat", {
+        method: "POST",
+        headers: authHeaders({ "Content-Type": "application/json" }),
+        body: JSON.stringify({ message }),
+      });
+      if (start.status === 401 || start.status === 403) {
+        throw new Error("Unauthorized — check your API key.");
+      }
+      const { jobId, error } = await start.json();
+      if (error) throw new Error(error);
+
+      // Poll until DONE/ERROR
+      let tries = 0;
+      while (true) {
+        await new Promise(r => setTimeout(r, 4000));
+        tries++;
+        const poll = await fetch(API_ENDPOINT + "/chat/" + encodeURIComponent(jobId), {
+          headers: authHeaders(),
+        });
+        if (poll.status === 401 || poll.status === 403) {
+          throw new Error("Unauthorized — check your API key.");
+        }
+        const data = await poll.json();
+        if (data.status === "RUNNING" || data.status === "PENDING") {
+          statusEl.innerHTML = '<span class="spinner"></span> Agents working… (' +
+            (tries * 4) + 's) — research, strategy, and document generation can take a few minutes.';
+          continue;
+        }
+        if (data.status === "DONE") {
+          statusEl.textContent = "";
+          addMessage(data.result || "(empty response)");
+          break;
+        }
+        if (data.status === "ERROR") {
+          statusEl.textContent = "";
+          addMessage("**Error:** " + (data.error || "unknown error"));
+          break;
+        }
+        statusEl.textContent = "Unexpected status: " + data.status;
+        break;
+      }
+    } catch (e) {
+      statusEl.textContent = "";
+      addMessage("**Request failed:** " + e.message);
+    } finally {
+      sendEl.disabled = false; inputEl.disabled = false; inputEl.focus();
+    }
+  }
+
+  sendEl.addEventListener("click", run);
+  inputEl.addEventListener("keydown", (e) => { if (e.key === "Enter") run(); });
+  inputEl.focus();
+</script>
+</body>
+</html>

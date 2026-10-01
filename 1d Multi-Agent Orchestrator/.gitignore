@@ -1,0 +1,10 @@
+# Generated deployment state (written by the setup scripts) — not source
+.tool_lambda_arns.json
+.gateway.json
+.orchestrator.json
+.backend.json
+.api.json
+.apikey.json
+.site.json
+__pycache__/
+*.pyc
