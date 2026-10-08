@@ -186,3 +186,7 @@ aidlc-docs
 docs/
 generated-diagrams/
 node_modules/
+IMPLEMENTATION_TODOS.md
+tests/
+aidlc/
+.provenance/

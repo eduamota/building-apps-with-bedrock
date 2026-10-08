@@ -39,6 +39,18 @@ class S3VectorsAppStack(Stack):
                         type="SEXUAL"
                     )
                 ]
+            ),
+            contextual_grounding_policy_config=bedrock.CfnGuardrail.ContextualGroundingPolicyConfigProperty(
+                filters_config=[
+                    bedrock.CfnGuardrail.ContextualGroundingFilterConfigProperty(
+                        type="GROUNDING",
+                        threshold=0.75
+                    ),
+                    bedrock.CfnGuardrail.ContextualGroundingFilterConfigProperty(
+                        type="RELEVANCE",
+                        threshold=0.75
+                    )
+                ]
             )
         )
 

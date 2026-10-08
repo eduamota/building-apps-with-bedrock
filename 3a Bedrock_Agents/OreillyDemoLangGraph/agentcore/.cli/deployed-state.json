@@ -1,0 +1,17 @@
+{
+  "targets": {
+    "default": {
+      "resources": {
+        "runtimes": {
+          "WeatherAgent": {
+            "runtimeId": "OreillyDemoLangGraph_WeatherAgent-IA7cp8BmHF",
+            "runtimeArn": "arn:aws:bedrock-agentcore:us-west-2:058264544288:runtime/OreillyDemoLangGraph_WeatherAgent-IA7cp8BmHF",
+            "roleArn": "arn:aws:iam::058264544288:role/AgentCore-OreillyDemoLang-ApplicationAgentWeatherAg-g129NsGG2Gsx"
+          }
+        },
+        "stackName": "AgentCore-OreillyDemoLangGraph-default",
+        "deployHash": "82e4b2a9e602b7f7"
+      }
+    }
+  }
+}

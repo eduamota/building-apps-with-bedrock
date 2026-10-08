@@ -1,4 +1,4 @@
-
+    
 from strands import Agent, tool
 from strands_tools import calculator
 from bedrock_agentcore import BedrockAgentCoreApp

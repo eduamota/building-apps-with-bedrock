@@ -1,4 +1,4 @@
-// File: /Users/emota/Projects/building-apps-with-bedrock/4-f1-pit-wall/frontend/app/layout.tsx
+// File: /Users/eduardo/Projects/building-apps-with-bedrock/4-f1-pit-wall/frontend/app/layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
