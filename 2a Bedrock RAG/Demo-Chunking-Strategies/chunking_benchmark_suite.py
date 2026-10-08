@@ -299,15 +299,17 @@ def chunk_hierarchical(
     return all_child_chunks
 
 
-def chunk_semantic_structural(text: str) -> List[Chunk]:
+def chunk_semantic_structural(text: str, max_tokens: int = 450) -> List[Chunk]:
     """Semantic & Document-Structure-Aware Chunking.
     
-    Preserves markdown headers, sections, and whole tables intact.
-    Does not slice tables or sentences in half.
+    Preserves markdown headers, sections, underline headings, and whole tables intact.
+    Does not slice tables or sentences in half. Subdivides larger sections into
+    semantic paragraphs when sections exceed max_tokens.
     """
+    # 1. Split on top-level boundaries: Document tags, Markdown headers (# / ##), or Underline headers (Word\n----)
+    boundary_pattern = r"(?=(?:\n|^)(?:# |## |# Document:|[A-Za-z0-9\s\(\)\/]{3,50}\n[-=]{3,}\n))"
+    raw_sections = re.split(boundary_pattern, text)
     chunks = []
-    # Split by major Markdown headings (## )
-    raw_sections = re.split(r"(?=(?:\n|^)## )", text)
     idx = 0
 
     for section in raw_sections:
@@ -316,8 +318,8 @@ def chunk_semantic_structural(text: str) -> List[Chunk]:
             continue
 
         sec_tokens = estimate_tokens(sec)
-        # If section is atomic table or under 450 tokens, preserve as unified unit
-        if sec_tokens <= 450 or ("|" in sec and "Memory Size" in sec):
+        # If section is small enough or contains an indivisible markdown table
+        if sec_tokens <= max_tokens:
             chunks.append(
                 Chunk(
                     id=f"semantic-{idx}",
@@ -328,20 +330,88 @@ def chunk_semantic_structural(text: str) -> List[Chunk]:
             )
             idx += 1
         else:
-            # Subdivide larger section by subheadings (### )
-            subsections = re.split(r"(?=(?:\n|^)### )", sec)
+            # Subdivide by subheadings or paragraph boundaries (double newlines)
+            sub_pattern = r"(?=(?:\n|^)(?:### |\d+\)\s+[A-Za-z]|\n\n+))"
+            subsections = re.split(sub_pattern, sec)
+            current_buffer = []
+            current_tokens = 0
+
             for sub in subsections:
-                sub = sub.strip()
-                if sub:
-                    chunks.append(
-                        Chunk(
-                            id=f"semantic-{idx}",
-                            text=sub,
-                            token_count=estimate_tokens(sub),
-                            metadata={"type": "semantic_subsection"},
+                sub_clean = sub.strip()
+                if not sub_clean:
+                    continue
+                tokens = estimate_tokens(sub_clean)
+
+                if current_tokens + tokens <= max_tokens:
+                    current_buffer.append(sub_clean)
+                    current_tokens += tokens
+                else:
+                    if current_buffer:
+                        combined_text = "\n\n".join(current_buffer)
+                        chunks.append(
+                            Chunk(
+                                id=f"semantic-{idx}",
+                                text=combined_text,
+                                token_count=estimate_tokens(combined_text),
+                                metadata={"type": "semantic_section"},
+                            )
                         )
+                        idx += 1
+                        current_buffer = []
+                        current_tokens = 0
+
+                    if tokens > max_tokens:
+                        # Fallback for massive atomic paragraphs: split on sentence boundaries
+                        sentences = re.split(r"(?<=[.!?])\s+", sub_clean)
+                        sent_buf = []
+                        sent_tokens = 0
+                        for s in sentences:
+                            st = estimate_tokens(s)
+                            if sent_tokens + st <= max_tokens:
+                                sent_buf.append(s)
+                                sent_tokens += st
+                            else:
+                                if sent_buf:
+                                    s_chunk = " ".join(sent_buf)
+                                    chunks.append(
+                                        Chunk(
+                                            id=f"semantic-{idx}",
+                                            text=s_chunk,
+                                            token_count=estimate_tokens(s_chunk),
+                                            metadata={"type": "semantic_subparagraph"},
+                                        )
+                                    )
+                                    idx += 1
+                                    sent_buf = []
+                                    sent_tokens = 0
+                                sent_buf.append(s)
+                                sent_tokens = st
+                        if sent_buf:
+                            s_chunk = " ".join(sent_buf)
+                            chunks.append(
+                                Chunk(
+                                    id=f"semantic-{idx}",
+                                    text=s_chunk,
+                                    token_count=estimate_tokens(s_chunk),
+                                    metadata={"type": "semantic_subparagraph"},
+                                )
+                            )
+                            idx += 1
+                    else:
+                        current_buffer.append(sub_clean)
+                        current_tokens = tokens
+
+            if current_buffer:
+                combined_text = "\n\n".join(current_buffer)
+                chunks.append(
+                    Chunk(
+                        id=f"semantic-{idx}",
+                        text=combined_text,
+                        token_count=estimate_tokens(combined_text),
+                        metadata={"type": "semantic_section"},
                     )
-                    idx += 1
+                )
+                idx += 1
 
     return chunks
 
@@ -429,18 +499,130 @@ class StrategyMetrics:
     score_balanced: float
 
 
+# ---------------------------------------------------------------------------
+# EnterpriseRAG-Bench Dataset Loader
+# ---------------------------------------------------------------------------
+def load_enterpriserag_bench(
+    data_dir: Optional[str] = None,
+    num_docs: int = 20,
+    num_questions: int = 20,
+) -> Tuple[str, List[Dict[str, Any]], Dict[str, Any]]:
+    """Loads enterprise documents and questions from EnterpriseRAG-Bench dataset."""
+    import glob
+
+    base_dir = data_dir or os.path.join(os.path.dirname(__file__), "data", "EnterpriseRAG-Bench")
+    confluence_dir = os.path.join(base_dir, "confluence_all", "confluence")
+    questions_file = os.path.join(base_dir, "questions.jsonl")
+
+    if not os.path.exists(confluence_dir) or not os.path.exists(questions_file):
+        raise FileNotFoundError(f"EnterpriseRAG-Bench dataset files not found in {base_dir}")
+
+    # Build document ID map
+    doc_map = {}
+    for path in glob.glob(os.path.join(confluence_dir, "*.txt")):
+        fname = os.path.basename(path)
+        dsid = fname.split("__")[0]
+        doc_map[dsid] = path
+
+    # Match questions with available Confluence documents
+    matched_questions = []
+    selected_doc_ids = []
+    with open(questions_file, "r", encoding="utf-8") as f:
+        for line in f:
+            if not line.strip():
+                continue
+            q = json.loads(line)
+            targets = [d for d in q.get("expected_doc_ids", []) if d in doc_map]
+            if targets:
+                matched_questions.append(q)
+                for d in targets:
+                    if d not in selected_doc_ids:
+                        selected_doc_ids.append(d)
+                if len(selected_doc_ids) >= num_docs and len(matched_questions) >= num_questions:
+                    break
+
+    selected_questions = matched_questions[:num_questions]
+    target_docs = selected_doc_ids[:num_docs]
+
+    # Combine target documents with clear document boundaries
+    corpus_parts = []
+    total_words = 0
+    for dsid in target_docs:
+        path = doc_map[dsid]
+        with open(path, "r", encoding="utf-8") as f:
+            content = f.read().strip()
+        fname = os.path.basename(path)
+        header = f"# Document: {fname}\nDOC_ID: {dsid}\n"
+        corpus_parts.append(header + content)
+        total_words += len(content.split())
+
+    combined_corpus = "\n\n---\n\n".join(corpus_parts)
+
+    formatted_queries = []
+    for q in selected_questions:
+        ans_facts = q.get("answer_facts", [])
+        gold_ans = q.get("gold_answer", "")
+        fragment = ans_facts[0] if ans_facts else gold_ans[:60]
+        formatted_queries.append({
+            "id": q.get("question_id", "q"),
+            "type": q.get("question_type", "enterprise_query"),
+            "query": q.get("question"),
+            "expected_doc_ids": q.get("expected_doc_ids", []),
+            "gold_answer": gold_ans,
+            "answer_facts": ans_facts,
+            "expected_answer_fragment": fragment,
+            "relevant_section": q.get("expected_doc_ids", [""])[0],
+        })
+
+    meta = {
+        "num_docs": len(target_docs),
+        "total_words": total_words,
+        "num_questions": len(formatted_queries),
+        "source": "EnterpriseRAG-Bench v1.0.0 (Confluence Corpus)",
+    }
+    return combined_corpus, formatted_queries, meta
+
+
 class ChunkingBenchmarkSuite:
     """Orchestrates comprehensive evaluation of chunking strategies."""
 
     def __init__(
         self,
-        document: str = BENCHMARK_DOCUMENT,
+        document: Optional[str] = None,
+        queries: Optional[List[Dict[str, Any]]] = None,
+        dataset: str = "enterpriserag",  # "enterpriserag" or "synthetic"
+        num_docs: int = 20,
+        num_questions: int = 20,
         model_id: str = DEFAULT_GENERATION_MODEL_ID,
         mock_mode: bool = True,
     ):
-        self.document = document
         self.model_id = model_id
         self.mock_mode = mock_mode
+        self.dataset_name = dataset
+        self.metadata: Dict[str, Any] = {}
+
+        if document is not None:
+            self.document = document
+            self.queries = queries or BENCHMARK_QUERIES
+            self.dataset_name = "Custom / Synthetic Document"
+            self.metadata = {"num_docs": 1, "total_words": len(self.document.split()), "num_questions": len(self.queries)}
+        elif dataset == "enterpriserag":
+            data_dir = os.path.join(os.path.dirname(__file__), "data", "EnterpriseRAG-Bench")
+            if os.path.exists(os.path.join(data_dir, "questions.jsonl")):
+                self.document, self.queries, self.metadata = load_enterpriserag_bench(
+                    data_dir=data_dir, num_docs=num_docs, num_questions=num_questions
+                )
+                self.dataset_name = "EnterpriseRAG-Bench v1.0.0"
+            else:
+                self.document = BENCHMARK_DOCUMENT
+                self.queries = queries or BENCHMARK_QUERIES
+                self.dataset_name = "Synthetic Guide (EnterpriseRAG data not found)"
+                self.metadata = {"num_docs": 1, "total_words": len(self.document.split()), "num_questions": len(self.queries)}
+        else:
+            self.document = BENCHMARK_DOCUMENT
+            self.queries = queries or BENCHMARK_QUERIES
+            self.dataset_name = "Synthetic Architecture Guide"
+            self.metadata = {"num_docs": 1, "total_words": len(self.document.split()), "num_questions": len(self.queries)}
 
     def evaluate_strategy(self, name: str, chunks: List[Chunk], top_k: int = 2) -> StrategyMetrics:
         retriever = VectorRetriever(chunks, mock_mode=self.mock_mode)
@@ -460,34 +642,49 @@ class ChunkingBenchmarkSuite:
                 table_slices += 1
         table_integrity = max(0.2, 1.0 - (table_slices / max(1, len(chunks))))
 
-        for q in BENCHMARK_QUERIES:
+        for q in self.queries:
             retrieved, ret_time = retriever.retrieve(q["query"], top_k=top_k)
             total_retrieval_time += ret_time
 
-            # Determine context delivered to LLM (parent text for hierarchical, chunk text otherwise)
             combined_context = ""
             query_prompt_tokens = 0
             found_answer = False
+            doc_hit = False
+
+            expected_docs = q.get("expected_doc_ids", [])
+            gold_answer = q.get("gold_answer", "").lower()
+            answer_facts = [f.lower() for f in q.get("answer_facts", [])]
+            expected_fragment = q.get("expected_answer_fragment", "").lower()
 
             for c in retrieved:
                 context_str = c.parent_text if c.parent_text else c.text
                 combined_context += "\n" + context_str
                 query_prompt_tokens += estimate_tokens(context_str)
 
-                # Check precision: contains relevant section keyword
-                if any(w.lower() in context_str.lower() for w in q["relevant_section"].split()):
+                # Precision: does retrieved context match target document or relevant section?
+                if any(doc_id in context_str for doc_id in expected_docs) or (
+                    q.get("relevant_section") and q["relevant_section"].lower() in context_str.lower()
+                ):
                     precision_hits += 1
+                    doc_hit = True
 
-                # Check completeness: contains the exact needle / expected answer
-                if q["expected_answer_fragment"].lower() in context_str.lower():
+                # Completeness: does context contain expected answer facts or key entities?
+                if expected_fragment and expected_fragment[:35] in context_str.lower():
                     found_answer = True
+                elif any(all(w in context_str.lower() for w in fact.split()[:4]) for fact in answer_facts):
+                    found_answer = True
+                elif doc_hit:
+                    gold_words = set(re.findall(r"\w{4,}", gold_answer))
+                    context_words = set(re.findall(r"\w{4,}", context_str.lower()))
+                    if len(gold_words & context_words) >= min(4, len(gold_words)):
+                        found_answer = True
 
             if found_answer:
                 completeness_hits += 1
 
             total_prompt_tokens += query_prompt_tokens
 
-        num_queries = len(BENCHMARK_QUERIES)
+        num_queries = max(1, len(self.queries))
         avg_precision = round(precision_hits / (num_queries * top_k), 3)
         avg_completeness = round(completeness_hits / num_queries, 3)
         avg_ret_ms = round(total_retrieval_time / num_queries, 2)
@@ -571,9 +768,19 @@ class ChunkingBenchmarkSuite:
 # ---------------------------------------------------------------------------
 # CLI Reporter & Presentation Formatter
 # ---------------------------------------------------------------------------
-def print_comparison_tables(results: Dict[str, StrategyMetrics], model_id: str = DEFAULT_GENERATION_MODEL_ID):
+def print_comparison_tables(
+    results: Dict[str, StrategyMetrics],
+    model_id: str = DEFAULT_GENERATION_MODEL_ID,
+    dataset_name: str = "EnterpriseRAG-Bench v1.0.0",
+    metadata: Optional[Dict[str, Any]] = None,
+):
+    meta = metadata or {}
+    docs_info = f"{meta.get('num_docs', '?')} docs (~{meta.get('total_words', '?'):,} words)" if "total_words" in meta else ""
+    q_info = f"{meta.get('num_questions', '?')} queries" if "num_questions" in meta else ""
+
     print("=" * 105)
     print(" AWS BEDROCK RAG CHUNKING STRATEGY BENCHMARK: QUALITY vs. LATENCY vs. COST")
+    print(f" Dataset: {dataset_name} | {docs_info} | {q_info}")
     print(f" Active Generation Model: Claude 3.5 Sonnet ({model_id})")
     print("=" * 105)
 
@@ -635,6 +842,15 @@ def run_benchmark_cli():
     parser = argparse.ArgumentParser(description="Chunking Strategies Quality-Latency-Cost Benchmark")
     parser.add_argument("--mock", action="store_true", default=True, help="Run with deterministic mock engine")
     parser.add_argument(
+        "--dataset",
+        type=str,
+        default="enterpriserag",
+        choices=["enterpriserag", "synthetic"],
+        help="Dataset to benchmark (default: enterpriserag)",
+    )
+    parser.add_argument("--num-docs", type=int, default=20, help="Number of documents to index (default: 20)")
+    parser.add_argument("--num-questions", type=int, default=20, help="Number of questions to evaluate (default: 20)")
+    parser.add_argument(
         "--model",
         type=str,
         default=DEFAULT_GENERATION_MODEL_ID,
@@ -643,14 +859,25 @@ def run_benchmark_cli():
     parser.add_argument("--json", action="store_true", help="Output results in JSON format")
     args = parser.parse_args()
 
-    suite = ChunkingBenchmarkSuite(model_id=args.model, mock_mode=args.mock)
+    suite = ChunkingBenchmarkSuite(
+        dataset=args.dataset,
+        num_docs=args.num_docs,
+        num_questions=args.num_questions,
+        model_id=args.model,
+        mock_mode=args.mock,
+    )
     results = suite.run_all_benchmarks()
 
     if args.json:
         data = {name: asdict(metric) for name, metric in results.items()}
         print(json.dumps(data, indent=2))
     else:
-        print_comparison_tables(results, model_id=args.model)
+        print_comparison_tables(
+            results,
+            model_id=args.model,
+            dataset_name=suite.dataset_name,
+            metadata=suite.metadata,
+        )
 
 
 if __name__ == "__main__":

@@ -52,13 +52,14 @@ In enterprise RAG systems built on AWS Bedrock, chunking is not simply an arbitr
 
 ---
 
-## 3. Empirical Benchmark Summary
+## 3. Empirical Benchmark Summary (EnterpriseRAG-Bench v1.0.0)
 
-Running `python chunking_benchmark_suite.py`:
+Running `python chunking_benchmark_suite.py --dataset enterpriserag --num-docs 20 --num-questions 20`:
 
 ```
 =========================================================================================================
  AWS BEDROCK RAG CHUNKING STRATEGY BENCHMARK: QUALITY vs. LATENCY vs. COST
+ Dataset: EnterpriseRAG-Bench v1.0.0 | 20 docs (~24,211 words) | 20 queries
  Active Generation Model: Claude 3.5 Sonnet (us.anthropic.claude-3-5-sonnet-20241022-v2:0)
 =========================================================================================================
 
@@ -66,41 +67,41 @@ Running `python chunking_benchmark_suite.py`:
 ---------------------------------------------------------------------------------------------------------
 Strategy                       | Chunks  | Avg Tokens | Precision  | Completeness  | Table Intact
 ---------------------------------------------------------------------------------------------------------
-Fixed-Small (150t)             | 11      | 143        |     87.5% |        62.5% |         82%
-Fixed-Medium (400t)            | 4       | 372        |    100.0% |       100.0% |        100%
-Fixed-Large (1000t)            | 2       | 720        |    100.0% |       100.0% |        100%
-Hierarchical (Parent-Child)    | 12      | 137        |    100.0% |       100.0% |         75%
-Semantic (Structural)          | 11      | 121        |     81.2% |        87.5% |        100%
+Fixed-Small (150t)             | 259     | 148        |     12.5% |        15.0% |         93%
+Fixed-Medium (400t)            | 93      | 397        |     12.5% |        35.0% |         83%
+Fixed-Large (1000t)            | 36      | 998        |     17.5% |        65.0% |         67%
+Hierarchical (Parent-Child)    | 294     | 138        |     15.0% |        40.0% |         92%
+Semantic (Structural)          | 156     | 207        |     10.0% |        45.0% |         94%
 
 [2] LATENCY BENCHMARK (Ingestion, Retrieval & LLM Prefill Latency)
 ---------------------------------------------------------------------------------------------------------
 Strategy                       | Ingest (ms) | Retrieve (ms) | Prefill (ms) | Total Latency 
 ---------------------------------------------------------------------------------------------------------
-Fixed-Small (150t)             |        0.28 |          0.07 |        53.76 |       303.83 ms
-Fixed-Medium (400t)            |        0.18 |          0.03 |       107.28 |       357.31 ms
-Fixed-Large (1000t)            |        0.15 |          0.02 |       190.92 |       440.94 ms
-Hierarchical (Parent-Child)    |        0.26 |          0.08 |       156.60 |       406.68 ms
-Semantic (Structural)          |        0.23 |          0.07 |        53.40 |       303.47 ms
+Fixed-Small (150t)             |        7.74 |          1.56 |        53.76 |       305.32 ms
+Fixed-Medium (400t)            |        5.35 |          0.54 |       114.00 |       364.54 ms
+Fixed-Large (1000t)            |        4.59 |          0.23 |       258.00 |       508.23 ms
+Hierarchical (Parent-Child)    |        7.42 |          1.70 |       162.00 |       413.70 ms
+Semantic (Structural)          |        5.42 |          0.91 |       102.24 |       353.15 ms
 
 [3] COST BENCHMARK (Embedding, Vector Storage & LLM Inference @ 1,000 queries)
 ---------------------------------------------------------------------------------------------------------
 Strategy                       | Prompt Tokens | Embed ($/1k docs) | LLM Cost ($/1k Q)  | Monthly @ 100k Q
 ---------------------------------------------------------------------------------------------------------
-Fixed-Small (150t)             |           298 | $         0.0316 | $          3.1440 | $        314.40
-Fixed-Medium (400t)            |           744 | $         0.0298 | $          4.4820 | $        448.20
-Fixed-Large (1000t)            |          1441 | $         0.0288 | $          6.5730 | $        657.30
-Hierarchical (Parent-Child)    |          1155 | $         0.0330 | $          5.7150 | $        571.50
-Semantic (Structural)          |           295 | $         0.0268 | $          3.1350 | $        313.50
+Fixed-Small (150t)             |           298 | $         0.7709 | $          3.1440 | $        314.40
+Fixed-Medium (400t)            |           800 | $         0.7396 | $          4.6500 | $        465.00
+Fixed-Large (1000t)            |          2000 | $         0.7188 | $          8.2500 | $        825.00
+Hierarchical (Parent-Child)    |          1200 | $         0.8165 | $          5.8500 | $        585.00
+Semantic (Structural)          |           702 | $         0.6477 | $          4.3560 | $        435.60
 
 [4] THE BALANCING ACT: PERSONA DECISION MATRIX (Scale 0 - 100)
 ---------------------------------------------------------------------------------------------------------
 Strategy                       | Cost-Sensitive | Latency-Critical | Quality-First  | Balanced Score
 ---------------------------------------------------------------------------------------------------------
-Fixed-Small (150t)             |           59.6 |             78.7 |           70.7 |           68.6
-Fixed-Medium (400t)            |           53.0 |             81.2 |           79.9 |           66.9
-Fixed-Large (1000t)            |           51.2 |             77.0 |           78.2 |           64.0
-Hierarchical (Parent-Child)    |           50.4 |             76.9 |           75.9 |           63.4
-Semantic (Structural)          |           64.0 |             83.8 |           79.3 |           73.5
+Fixed-Small (150t)             |           46.4 |             63.2 |           44.2 |           53.6
+Fixed-Medium (400t)            |           34.1 |             59.0 |           42.4 |           45.4
+Fixed-Large (1000t)            |           35.2 |             56.5 |           47.5 |           45.1
+Hierarchical (Parent-Child)    |           34.6 |             58.3 |           44.5 |           45.5
+Semantic (Structural)          |           37.7 |             62.3 |           47.1 |           48.9
 ---------------------------------------------------------------------------------------------------------
 ```
 
@@ -112,10 +113,10 @@ Semantic (Structural)          |           64.0 |             83.8 |           7
 flowchart TD
     Start["What is your primary constraint / workload type?"]
     
-    Start -->|"Cost-Sensitive (High volume, simple queries)"| CostPath["Fixed-Small (150-200 tokens)<br/>Low prompt payload, minimizes LLM bill"]
-    Start -->|"Latency-Critical (Real-time voice / chat SLA)"| LatencyPath["Semantic / Structural Chunking<br/>Small focused chunks, fast prefill, preserves context"]
-    Start -->|"Quality-First (Legal, Compliance, Complex synthesis)"| QualityPath["Hierarchical / Parent-Child<br/>128t child search + 600t parent generation"]
-    Start -->|"Structured Docs (Markdown tables, specs)"| StructPath["Semantic / Structural Chunking<br/>Keeps entire tables and sections intact"]
+    Start -->|"Cost-Sensitive (High volume, simple queries)"| CostPath["Fixed-Small (150-200 tokens)<br/>Low prompt payload ($314/100k), minimizes LLM bill"]
+    Start -->|"Latency-Critical (Real-time voice / chat SLA)"| LatencyPath["Fixed-Small or Semantic<br/>Small focused chunks, fast prefill, preserves context"]
+    Start -->|"Quality-First (Legal, Compliance, Complex synthesis)"| QualityPath["Hierarchical / Parent-Child<br/>150t child search + 600t parent generation"]
+    Start -->|"Structured Docs (Markdown tables, specs, Confluence)"| StructPath["Semantic / Structural Chunking<br/>Keeps entire tables and sections intact"]
 ```
 
 ---
@@ -124,12 +125,16 @@ flowchart TD
 
 ### Run CLI Benchmark Suite
 ```bash
-# Run benchmark in simulation/mock mode
-python chunking_benchmark_suite.py --mock
+# Run on official EnterpriseRAG-Bench Confluence dataset (default: 20 docs, 20 questions)
+python chunking_benchmark_suite.py --dataset enterpriserag --num-docs 20 --num-questions 20
+
+# Run on synthetic architecture guide
+python chunking_benchmark_suite.py --dataset synthetic
 
 # Output raw JSON metrics
-python chunking_benchmark_suite.py --json
+python chunking_benchmark_suite.py --dataset enterpriserag --json
 ```
 
 ### Interactive Notebook
-Open and run `chunking_tradeoffs_demo.ipynb` to visualize severed chunks, test query responses, and interact with the custom persona balance calculator.
+Open and run `chunking_tradeoffs_demo.ipynb` to visualize severed chunks, test query responses, and interact with the custom persona balance calculator across EnterpriseRAG-Bench and synthetic datasets.
+

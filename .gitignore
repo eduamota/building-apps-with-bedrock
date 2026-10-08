@@ -204,3 +204,6 @@ cdk.out/
 generated_images/
 .cache/
 *.zip
+
+# Benchmark Raw Datasets
+2a Bedrock RAG/Demo-Chunking-Strategies/data/
