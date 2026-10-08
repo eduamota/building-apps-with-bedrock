@@ -59,47 +59,48 @@ Running `python chunking_benchmark_suite.py`:
 ```
 =========================================================================================================
  AWS BEDROCK RAG CHUNKING STRATEGY BENCHMARK: QUALITY vs. LATENCY vs. COST
+ Active Generation Model: Claude 3.5 Sonnet (us.anthropic.claude-3-5-sonnet-20241022-v2:0)
 =========================================================================================================
 
 [1] QUALITY BENCHMARK (Precision, Answer Completeness & Structural Integrity)
 ---------------------------------------------------------------------------------------------------------
 Strategy                       | Chunks  | Avg Tokens | Precision  | Completeness  | Table Intact
 ---------------------------------------------------------------------------------------------------------
-Fixed-Small (150t)             | 7       | 136        |     70.0% |        40.0% |         86%
-Fixed-Medium (400t)            | 3       | 303        |    100.0% |        80.0% |        100%
-Fixed-Large (1000t)            | 1       | 812        |     50.0% |       100.0% |        100%
-Hierarchical (Parent-Child)    | 7       | 139        |    100.0% |       100.0% |         86%
-Semantic (Structural)          | 7       | 115        |     90.0% |        80.0% |        100%
+Fixed-Small (150t)             | 11      | 143        |     87.5% |        62.5% |         82%
+Fixed-Medium (400t)            | 4       | 372        |    100.0% |       100.0% |        100%
+Fixed-Large (1000t)            | 2       | 720        |    100.0% |       100.0% |        100%
+Hierarchical (Parent-Child)    | 12      | 137        |    100.0% |       100.0% |         75%
+Semantic (Structural)          | 11      | 121        |     81.2% |        87.5% |        100%
 
 [2] LATENCY BENCHMARK (Ingestion, Retrieval & LLM Prefill Latency)
 ---------------------------------------------------------------------------------------------------------
 Strategy                       | Ingest (ms) | Retrieve (ms) | Prefill (ms) | Total Latency 
 ---------------------------------------------------------------------------------------------------------
-Fixed-Small (150t)             |        0.13 |          0.01 |        51.60 |       301.61 ms
-Fixed-Medium (400t)            |        0.09 |          0.01 |       107.04 |       357.05 ms
-Fixed-Large (1000t)            |        0.07 |          0.00 |       115.44 |       365.44 ms
-Hierarchical (Parent-Child)    |        0.10 |          0.01 |       129.36 |       379.37 ms
-Semantic (Structural)          |        0.09 |          0.01 |        50.52 |       300.53 ms
+Fixed-Small (150t)             |        0.28 |          0.07 |        53.76 |       303.83 ms
+Fixed-Medium (400t)            |        0.18 |          0.03 |       107.28 |       357.31 ms
+Fixed-Large (1000t)            |        0.15 |          0.02 |       190.92 |       440.94 ms
+Hierarchical (Parent-Child)    |        0.26 |          0.08 |       156.60 |       406.68 ms
+Semantic (Structural)          |        0.23 |          0.07 |        53.40 |       303.47 ms
 
 [3] COST BENCHMARK (Embedding, Vector Storage & LLM Inference @ 1,000 queries)
 ---------------------------------------------------------------------------------------------------------
 Strategy                       | Prompt Tokens | Embed ($/1k docs) | LLM Cost ($/1k Q)  | Monthly @ 100k Q
 ---------------------------------------------------------------------------------------------------------
-Fixed-Small (150t)             |           280 | $         0.0191 | $          3.0900 | $        309.00
-Fixed-Medium (400t)            |           742 | $         0.0182 | $          4.4760 | $        447.60
-Fixed-Large (1000t)            |           812 | $         0.0162 | $          4.6860 | $        468.60
-Hierarchical (Parent-Child)    |           928 | $         0.0196 | $          5.0340 | $        503.40
-Semantic (Structural)          |           271 | $         0.0162 | $          3.0630 | $        306.30
+Fixed-Small (150t)             |           298 | $         0.0316 | $          3.1440 | $        314.40
+Fixed-Medium (400t)            |           744 | $         0.0298 | $          4.4820 | $        448.20
+Fixed-Large (1000t)            |          1441 | $         0.0288 | $          6.5730 | $        657.30
+Hierarchical (Parent-Child)    |          1155 | $         0.0330 | $          5.7150 | $        571.50
+Semantic (Structural)          |           295 | $         0.0268 | $          3.1350 | $        313.50
 
 [4] THE BALANCING ACT: PERSONA DECISION MATRIX (Scale 0 - 100)
 ---------------------------------------------------------------------------------------------------------
 Strategy                       | Cost-Sensitive | Latency-Critical | Quality-First  | Balanced Score
 ---------------------------------------------------------------------------------------------------------
-Fixed-Small (150t)             |           55.5 |             73.5 |           61.5 |           63.7
-Fixed-Medium (400t)            |           50.1 |             77.7 |           74.0 |           63.5
-Fixed-Large (1000t)            |           48.2 |             75.5 |           70.7 |           61.4
-Hierarchical (Parent-Child)    |           51.6 |             79.0 |           77.7 |           65.1
-Semantic (Structural)          |           64.5 |             83.7 |           78.9 |           73.7
+Fixed-Small (150t)             |           59.6 |             78.7 |           70.7 |           68.6
+Fixed-Medium (400t)            |           53.0 |             81.2 |           79.9 |           66.9
+Fixed-Large (1000t)            |           51.2 |             77.0 |           78.2 |           64.0
+Hierarchical (Parent-Child)    |           50.4 |             76.9 |           75.9 |           63.4
+Semantic (Structural)          |           64.0 |             83.8 |           79.3 |           73.5
 ---------------------------------------------------------------------------------------------------------
 ```
 

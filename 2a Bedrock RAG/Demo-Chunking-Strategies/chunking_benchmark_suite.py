@@ -118,6 +118,54 @@ All compute payloads in transit and at rest must adhere to Zero-Trust FedRAMP Hi
 - Customer Managed Keys (CMK): S3 vectors and model caches must use KMS CMK with annual automatic key rotation.
 - Execution Role Bounds: Lambda IAM execution roles must strictly prohibit wildcard `*` permissions in action lists.
 - Secret Ingestion: Database credentials must be retrieved via AWS Secrets Manager with 30-day automatic rotation.
+
+---
+
+## 7. Vector Storage Engine Comparison
+Evaluating vector stores across latency, indexing throughput, and monthly unit costs.
+
+| Engine | Index Type | Query Latency (p95) | Monthly Cost (10M Vectors) | Max Dimension |
+|---|---|---|---|---|
+| OpenSearch Serverless | HNSW / FAISS | 12 ms | $180.00 / month | 4096 dims |
+| Aurora PostgreSQL (pgvector)| IVFFlat / HNSW | 28 ms | $120.00 / month | 2000 dims |
+| Amazon S3 Vectors | Native S3 Index | 35 ms | $11.00 / month | 1536 dims |
+| Qdrant on EC2 | HNSW Custom | 15 ms | $95.00 / month | 4096 dims |
+
+Selection Guidance: Amazon S3 Vectors delivers 90% cost savings for batch retrieval, while OpenSearch Serverless is required for sub-15ms real-time conversational agents.
+
+---
+
+## 8. Bedrock Knowledge Base Ingestion Pipeline
+Automated document ingestion transforms raw PDFs and Markdown files into indexed embeddings.
+
+### Ingestion Specifications:
+- Data Automation: Bedrock Data Automation extracts structured key-value pairs and tabular layouts from raw PDFs.
+- Embedding Model: Amazon Titan Text Embeddings V2 normalized to 1024 dimensions.
+- Metadata Attributes: Every chunk must contain `source_document`, `chapter_id`, `classification_tier`, and `last_updated_epoch`.
+- Incremental Sync: S3 event triggers invoke StartIngestionJob on S3 `ObjectCreated:*` with maximum batch size of 500 documents.
+
+---
+
+## 9. Observability & CloudWatch Metric Alarms
+Distributed tracing with AWS X-Ray and CloudWatch Container Insights provides real-time telemetry.
+
+| Metric Name | Threshold Condition | Evaluation Period | Severity | Action Triggered |
+|---|---|---|---|---|
+| LambdaErrorRate | >= 0.5% errors | 2 consecutive 1-min | CRITICAL | Automated Canary Rollback |
+| ExecutionDuration | >= 4500 ms (80% timeout) | 3 consecutive 1-min | HIGH | Scale Provisioned Concurrency |
+| ThrottlesCount | >= 10 throttles | 1 evaluation period | HIGH | Request Regional Quota Increase |
+| DLQMessageCount | >= 1 message in DLQ | 1 evaluation period | WARNING | PagerDuty SRE Notification |
+
+---
+
+## 10. Operational Runbooks & Self-Healing Circuits
+Automated remediation minimizes MTTR during partial regional disruptions.
+
+### Runbook 10.1: Degraded Retrieval Failover:
+1. Detect Vector Search Timeout (> 2500ms on 3 consecutive probes).
+2. Circuit Breaker opens: Divert traffic to secondary replica or degraded lexical fallback.
+3. Post incident notification to `#sre-incidents` Slack channel via SNS.
+4. Auto-heal probe checks vector index health every 15 seconds; upon 3 consecutive healthy responses, circuit enters half-open state.
 """
 
 BENCHMARK_QUERIES = [
@@ -155,6 +203,27 @@ BENCHMARK_QUERIES = [
         "query": "What is the client retry backoff strategy and circuit breaker trip condition for API throttling?",
         "expected_answer_fragment": "full jitter exponential backoff with base sleep of 100ms",
         "relevant_section": "5. API Rate Limits, Throttling & Exponential Backoff",
+    },
+    {
+        "id": "q6_vector_engines",
+        "type": "Tabular Retrieval (Multi-Column Context)",
+        "query": "What is the monthly cost of 10M vectors and p95 query latency for Amazon S3 Vectors versus OpenSearch Serverless?",
+        "expected_answer_fragment": "$11.00 / month",
+        "relevant_section": "7. Vector Storage Engine Comparison",
+    },
+    {
+        "id": "q7_kb_sync",
+        "type": "Architecture Specification",
+        "query": "What metadata attributes are required for Bedrock Knowledge Base chunks and what is the incremental sync batch size?",
+        "expected_answer_fragment": "maximum batch size of 500 documents",
+        "relevant_section": "8. Bedrock Knowledge Base Ingestion Pipeline",
+    },
+    {
+        "id": "q8_observability",
+        "type": "Multi-Column Tabular Lookup",
+        "query": "What action is triggered when the Lambda ExecutionDuration alarm condition is breached in CloudWatch?",
+        "expected_answer_fragment": "Scale Provisioned Concurrency",
+        "relevant_section": "9. Observability & CloudWatch Metric Alarms",
     },
 ]
 
@@ -297,11 +366,11 @@ class VectorRetriever:
 
     def _get_embedding(self, text: str) -> List[float]:
         if self.mock_mode:
-            # Deterministic bag-of-words pseudo-embedding
-            words = set(re.findall(r"\w+", text.lower()))
-            vector = [0.0] * 32
+            # Deterministic feature-hashed pseudo-embedding (256-dim)
+            words = re.findall(r"\w+", text.lower())
+            vector = [0.0] * 256
             for word in words:
-                idx = hash(word) % 32
+                idx = abs(hash(word)) % 256
                 vector[idx] += 1.0
             norm = math.sqrt(sum(v * v for v in vector)) or 1.0
             return [v / norm for v in vector]
@@ -385,8 +454,9 @@ class ChunkingBenchmarkSuite:
         # Evaluate table integrity: check if markdown tables have fragmented headers
         table_slices = 0
         for c in chunks:
-            if ("|" in c.text) and ("---|---" not in c.text and "Memory Size" not in c.text):
-                # Fragmented table chunk without header
+            has_table_rows = bool(re.search(r"\|.*\|.*\|", c.text))
+            has_table_header = bool(re.search(r"\|?\s*---+\s*\|", c.text))
+            if has_table_rows and not has_table_header:
                 table_slices += 1
         table_integrity = max(0.2, 1.0 - (table_slices / max(1, len(chunks))))
 
