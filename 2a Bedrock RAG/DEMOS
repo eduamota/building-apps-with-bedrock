@@ -44,3 +44,44 @@ Collection routing (Technical Docs, FAQs, Memos)
 Metadata-based filtering
 
 Collection-specific prompts
+
+
+Demo 6: Prompt Management
+Pattern: Bedrock Prompt Management with Dynamic Variables & Multi-Turn Chat
+Location: Demo-Prompt-Management/
+Key Learning: Decouple prompt templates from application code and manage versioning natively.
+
+Demo 7: Advanced Chunking Strategies
+Pattern: Multimodal, Hierarchical, Semantic & Fixed-Size Chunking
+Location: Demo-Chunking-Strategies/
+Key Learning: Layout-aware chunking preserving tables, headers, and images.
+
+Demo 8: RAG Evaluation with RAGAS
+Pattern: Bedrock Model Evaluation API & RAGAS Metrics (Faithfulness, Answer Relevance)
+Location: Demo-RAGAS-Evaluation/
+Key Learning: Automated objective evaluation of RAG retrieval and generation quality.
+
+Demo 9: Bedrock Flows
+Pattern: Multi-Step Flow Orchestration via Boto3 and CDK CfnFlow
+Location: Demo-Bedrock-Flows/
+Key Learning: Declarative visual graph orchestration connecting prompts, knowledge bases, and lambdas.
+
+Demo 10: Agentic Patterns (CRAG & Self-RAG)
+Pattern: Corrective RAG with Web Search Fallback & Self-RAG Reflection Tokens
+Location: Demo-Agentic-Patterns/
+Key Learning: Autonomous document grading, hallucination detection, and adaptive query rewriting.
+
+Demo 11: Text-to-SQL with SQLite
+Pattern: Natural Language to SQL with Strict AST Read-Only Validation
+Location: Demo-Text-to-SQL/
+Key Learning: Safe database interrogation without SQL injection risks.
+
+Demo 12: Security, Guardrails & Red-Teaming
+Pattern: Indirect Prompt Injection Defense with Contextual Grounding Guardrails (>= 0.75)
+Location: Demo-Red-Teaming/
+Key Learning: Guardrail interception and deterministic tool permission policies.
+
+Demo 13: Multi-Agent System Using RAG Built from Scratch
+Pattern: Multi-Agent ReAct Architecture with Isolated Privilege Tiers & Security Supervisor
+Location: Demo-Multi-Agent-RAG/ & Demo-Red-Teaming/multi_agent_rag.py
+Key Learning: Pure-Python multi-agent system from scratch using Bedrock Converse API with unprivileged RAG ingestion, domain analyst, isolated privileged executor, and security supervisor.
