@@ -190,3 +190,17 @@ IMPLEMENTATION_TODOS.md
 tests/
 aidlc/
 .provenance/
+
+# AWS CDK synth outputs
+cdk.out/
+
+# Next.js build output
+.next/
+
+# Bedrock AgentCore artifacts
+.bedrock_agentcore/
+
+# Generated images & local caches
+generated_images/
+.cache/
+*.zip
