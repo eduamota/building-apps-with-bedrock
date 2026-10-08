@@ -35,6 +35,7 @@ from botocore.exceptions import ClientError, NoCredentialsError
 # Embedding: Amazon Titan Text Embeddings V2 ($0.02 / 1M tokens)
 PRICE_TITAN_EMBEDDING_PER_1M_TOKENS = 0.020
 # LLM: Claude 3.5 Sonnet ($3.00 / 1M input, $15.00 / 1M output)
+DEFAULT_GENERATION_MODEL_ID = "us.anthropic.claude-3-5-sonnet-20241022-v2:0"
 PRICE_CLAUDE_SONNET_INPUT_PER_1M = 3.00
 PRICE_CLAUDE_SONNET_OUTPUT_PER_1M = 15.00
 # LLM: Claude 3 Haiku ($0.25 / 1M input, $1.25 / 1M output)
@@ -362,8 +363,14 @@ class StrategyMetrics:
 class ChunkingBenchmarkSuite:
     """Orchestrates comprehensive evaluation of chunking strategies."""
 
-    def __init__(self, document: str = BENCHMARK_DOCUMENT, mock_mode: bool = True):
+    def __init__(
+        self,
+        document: str = BENCHMARK_DOCUMENT,
+        model_id: str = DEFAULT_GENERATION_MODEL_ID,
+        mock_mode: bool = True,
+    ):
         self.document = document
+        self.model_id = model_id
         self.mock_mode = mock_mode
 
     def evaluate_strategy(self, name: str, chunks: List[Chunk], top_k: int = 2) -> StrategyMetrics:
@@ -494,9 +501,10 @@ class ChunkingBenchmarkSuite:
 # ---------------------------------------------------------------------------
 # CLI Reporter & Presentation Formatter
 # ---------------------------------------------------------------------------
-def print_comparison_tables(results: Dict[str, StrategyMetrics]):
+def print_comparison_tables(results: Dict[str, StrategyMetrics], model_id: str = DEFAULT_GENERATION_MODEL_ID):
     print("=" * 105)
     print(" AWS BEDROCK RAG CHUNKING STRATEGY BENCHMARK: QUALITY vs. LATENCY vs. COST")
+    print(f" Active Generation Model: Claude 3.5 Sonnet ({model_id})")
     print("=" * 105)
 
     # 1. Quality Table
@@ -556,17 +564,23 @@ def print_comparison_tables(results: Dict[str, StrategyMetrics]):
 def run_benchmark_cli():
     parser = argparse.ArgumentParser(description="Chunking Strategies Quality-Latency-Cost Benchmark")
     parser.add_argument("--mock", action="store_true", default=True, help="Run with deterministic mock engine")
+    parser.add_argument(
+        "--model",
+        type=str,
+        default=DEFAULT_GENERATION_MODEL_ID,
+        help="Model ID for generation & cost calculation (default: us.anthropic.claude-3-5-sonnet-20241022-v2:0)",
+    )
     parser.add_argument("--json", action="store_true", help="Output results in JSON format")
     args = parser.parse_args()
 
-    suite = ChunkingBenchmarkSuite(mock_mode=args.mock)
+    suite = ChunkingBenchmarkSuite(model_id=args.model, mock_mode=args.mock)
     results = suite.run_all_benchmarks()
 
     if args.json:
         data = {name: asdict(metric) for name, metric in results.items()}
         print(json.dumps(data, indent=2))
     else:
-        print_comparison_tables(results)
+        print_comparison_tables(results, model_id=args.model)
 
 
 if __name__ == "__main__":
