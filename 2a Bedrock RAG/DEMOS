@@ -81,7 +81,7 @@ Pattern: Indirect Prompt Injection Defense with Contextual Grounding Guardrails 
 Location: Demo-Red-Teaming/
 Key Learning: Guardrail interception and deterministic tool permission policies.
 
-Demo 13: Multi-Agent System Using RAG Built from Scratch
+Demo 13: Multi-Agent System Using RAG with AWS Strands Agents
 Pattern: Multi-Agent ReAct Architecture with Isolated Privilege Tiers & Security Supervisor
 Location: Demo-Multi-Agent-RAG/ & Demo-Red-Teaming/multi_agent_rag.py
-Key Learning: Pure-Python multi-agent system from scratch using Bedrock Converse API with unprivileged RAG ingestion, domain analyst, isolated privileged executor, and security supervisor.
+Key Learning: Enterprise multi-agent system built with AWS Strands Agents (`strands-agents`) and Bedrock models, featuring unprivileged RAG ingestion, domain analyst, isolated privileged executor, and security supervisor with Contextual Grounding Guardrails (>= 0.75).
